@@ -2,10 +2,10 @@ package com.banasiak.android.nerdalert.ui.activity;
 
 import com.banasiak.android.nerdalert.R;
 import com.banasiak.android.nerdalert.ui.adapters.SectionsPagerAdapter;
-import com.banasiak.android.nerdalert.ui.slidingtabs.SlidingTabLayout;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -38,11 +38,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(sectionsPagerAdapter);
 
-        SlidingTabLayout tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setSelectedIndicatorColors(ContextCompat.getColor(this, R.color.color_accent));
-        tabs.setTextColor(ContextCompat.getColor(this, R.color.color_text_light));
-        tabs.setDividerColors(ContextCompat.getColor(this, R.color.color_divider));
-        tabs.setViewPager(viewPager);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
     }
 
 
