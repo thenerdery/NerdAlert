@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">NerdAlert</string>
+    <string name="app_name">Nerd Alert</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_nerds">Nerds</string>
+    <string name="title_beacons">Beacons</string>
+    <string name="title_myinfo">My Info</string>
 
     <string name="hello_world">Hello world!</string>
 
