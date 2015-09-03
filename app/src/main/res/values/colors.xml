@@ -20,15 +20,15 @@
     <color name="black">#000000</color>
     <color name="darkish_gray">#222222</color>
 
-    <!-- https://www.materialpalette.com/green/orange -->
-    <color name="color_primary">#4CAF50</color>
-    <color name="color_primary_dark">#388E3C</color>
-    <color name="color_primary_light">#C8E6C9</color>
-    <color name="color_accent">#FF9800</color>
+    <!-- https://www.materialpalette.com/deep-purple/indigo -->
+    <color name="color_primary_dark">#512DA8</color>
+    <color name="color_primary">#673AB7</color>
+    <color name="color_primary_light">#D1C4E9</color>
+    <color name="color_text_light">#FFFFFF</color>
+    <color name="color_accent">#536DFE</color>
     <color name="color_text_primary">#212121</color>
     <color name="color_text_secondary">#727272</color>
-    <color name="color_text_light">#FFFFFF</color>
-    <color name="color_background">@color/color_text_light</color>
     <color name="color_divider">#B6B6B6</color>
+    <color name="color_background">@color/color_text_light</color>
 
 </resources>
