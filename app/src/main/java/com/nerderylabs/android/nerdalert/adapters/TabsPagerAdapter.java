@@ -24,10 +24,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         Tabs(int resourceId) {
             this.resourceId = resourceId;
         }
-
-        public int getResourceId() {
-            return resourceId;
-        }
     }
 
     final private Context context;
@@ -60,9 +56,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         Locale l = Locale.getDefault();
         switch (position) {
             case 0:
-                return context.getString(Tabs.NERDS.getResourceId());
+                return context.getString(Tabs.NERDS.resourceId);
             case 1:
-                return context.getString(Tabs.BEACONS.getResourceId());
+                return context.getString(Tabs.BEACONS.resourceId);
         }
         return null;
     }
