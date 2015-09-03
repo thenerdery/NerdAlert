@@ -1,6 +1,6 @@
-package com.banasiak.android.nerdalert.ui.adapters;
+package com.nerderylabs.android.nerdalert.adapters;
 
-import com.banasiak.android.nerdalert.R;
+import com.nerderylabs.android.nerdalert.R;
 
 import android.content.Context;
 import android.os.Bundle;

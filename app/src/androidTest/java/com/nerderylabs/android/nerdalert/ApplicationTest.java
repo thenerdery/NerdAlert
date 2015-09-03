@@ -1,4 +1,4 @@
-package com.banasiak.android.nerdalert;
+package com.nerderylabs.android.nerdalert;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

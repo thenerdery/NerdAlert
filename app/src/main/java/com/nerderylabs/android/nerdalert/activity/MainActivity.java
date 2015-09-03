@@ -1,7 +1,7 @@
-package com.banasiak.android.nerdalert.ui.activity;
+package com.nerderylabs.android.nerdalert.activity;
 
-import com.banasiak.android.nerdalert.R;
-import com.banasiak.android.nerdalert.ui.adapters.SectionsPagerAdapter;
+import com.nerderylabs.android.nerdalert.R;
+import com.nerderylabs.android.nerdalert.adapters.SectionsPagerAdapter;
 
 import android.os.Build;
 import android.os.Bundle;
