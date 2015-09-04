@@ -4,24 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:background="@color/color_primary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card"
@@ -29,7 +19,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="4dp">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="8dp">
 
                 <android.support.percent.PercentRelativeLayout
                     android:layout_width="match_parent"
@@ -132,10 +124,11 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
+        <com.nerderylabs.android.nerdalert.widgets.NoSwipeViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 

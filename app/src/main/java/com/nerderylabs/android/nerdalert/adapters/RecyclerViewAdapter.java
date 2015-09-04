@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = RecyclerViewAdapter.class.getSimpleName();
 
@@ -48,7 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return neighbors == null ? 0 : neighbors.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name;
 
@@ -56,8 +56,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            tagline = (TextView) itemView.findViewById(R.id.tagline);
+            name = (TextView) itemView.findViewById(R.id.neighbor_name);
+            tagline = (TextView) itemView.findViewById(R.id.neighbor_tagline);
         }
     }
 }
