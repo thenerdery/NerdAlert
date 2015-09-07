@@ -49,7 +49,7 @@ public class NerdFragment extends BaseFragment {
         nerdList.clear();
 
         for (int i = 0; i < 100; i++) {
-            Neighbor nerd = new Neighbor(i + " Richard Banasiak " + i, "i void warranties...");
+            Neighbor nerd = new Neighbor(i + " Richard Banasiak " + i, "i void warranties...", null);
             nerdList.add(nerd);
         }
 

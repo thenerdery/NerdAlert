@@ -1,19 +1,25 @@
 package com.nerderylabs.android.nerdalert.fragments;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.adapters.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
+import com.nerderylabs.android.nerdalert.settings.Settings;
+import com.nerderylabs.android.nerdalert.util.DelayedTextWatcher;
 import com.nerderylabs.android.nerdalert.widgets.NoSwipeViewPager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class MainFragment extends Fragment {
 
@@ -48,9 +54,36 @@ public class MainFragment extends Fragment {
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        setupTextInputs();
+
         return view;
     }
 
+    private void setupTextInputs() {
+        final EditText nameEditText = (EditText) view.findViewById(R.id.my_name);
+        final EditText taglineEditText = (EditText) view.findViewById(R.id.my_tagline);
+
+        nameEditText.setText(Settings.getName(getContext()));
+        taglineEditText.setText(Settings.getTagline(getContext()));
+
+        // submit buttons are for lamers...
+        DelayedTextWatcher watcher = new DelayedTextWatcher(new DelayedTextWatcher.Callback() {
+            @Override
+            public void afterTextChanged(Editable editableText) {
+                if(nameEditText.getEditableText() == editableText) {
+                    myInfo.name = editableText.toString();
+                    Settings.setName(getContext(), myInfo.name);
+                } else if(taglineEditText.getEditableText() == editableText) {
+                    myInfo.tagline = editableText.toString();
+                    Settings.setTagline(getContext(), myInfo.tagline);
+                }
+                Log.d(TAG, "myInfo: " + myInfo.toJson());
+            }
+        });
+
+        nameEditText.addTextChangedListener(watcher);
+        taglineEditText.addTextChangedListener(watcher);
+    }
 
 }
 
