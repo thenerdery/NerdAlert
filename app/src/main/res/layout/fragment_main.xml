@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="8dp">
+
+                <android.support.percent.PercentRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/nametag_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/nametag_hello"
+                        android:paddingTop="6dp"
+                        android:textSize="36sp"
+                        android:gravity="center"
+                        android:background="@color/color_accent"
+                        android:textColor="@color/color_text_light"
+                        app:layout_widthPercent="100%" />
+
+                    <TextView
+                        android:id="@+id/nametag_subheader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/nametag_header"
+                        android:text="@string/nametag_mynameis"
+                        android:layout_marginBottom="12dp"
+                        android:paddingBottom="6dp"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:background="@color/color_accent"
+                        android:textColor="@color/color_text_light"
+                        app:layout_widthPercent="100%" />
+
+                    <ImageView
+                        android:id="@+id/photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/nametag_subheader"
+                        android:src="@drawable/koala"
+                        app:layout_widthPercent="30%" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/name_wrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nametag_subheader"
+                        android:layout_toRightOf="@id/photo"
+                        app:layout_widthPercent="70%">
+
+                        <EditText
+                            android:id="@+id/my_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="14sp"
+                            android:inputType="textPersonName"
+                            android:hint="@string/nametag_name" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tagline_wrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name_wrapper"
+                        android:layout_toRightOf="@id/photo"
+                        app:layout_widthPercent="75%">
+
+                        <EditText
+                            android:id="@+id/my_tagline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:inputType="textAutoComplete"
+                            android:hint="@string/nametag_tagline" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="14dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/color_accent"
+                        android:layout_below="@id/photo"
+                        app:layout_widthPercent="100%" />
+
+                </android.support.percent.PercentRelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_primary"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <com.nerderylabs.android.nerdalert.widgets.NoSwipeViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_nearby"
+        app:fabSize="normal"
+        app:elevation="4dp" />
+
+</RelativeLayout>
