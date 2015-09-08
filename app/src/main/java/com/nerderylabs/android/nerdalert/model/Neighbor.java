@@ -10,6 +10,8 @@ public class Neighbor {
 
     public String photoUrl;
 
+    private static final Gson gson = new Gson();
+
     public Neighbor() {
     }
 
@@ -20,7 +22,11 @@ public class Neighbor {
     }
 
     public String toJson() {
-        Gson gson = new Gson();
         return gson.toJson(this);
     }
+
+    public static Neighbor fromJson(String json) {
+        return gson.fromJson(json, Neighbor.class);
+    }
+
 }

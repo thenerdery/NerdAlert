@@ -4,25 +4,15 @@
     <string name="title_nerds">Nerds</string>
     <string name="title_beacons">Beacons</string>
 
-    <string name="hello_world">Hello world!</string>
-
-    <string name="action_settings">Settings</string>
-
     <string name="nametag_hello">HELLO!</string>
     <string name="nametag_mynameis">my name is</string>
     <string name="nametag_name">Name</string>
     <string name="nametag_tagline">Tagline</string>
 
-    <string name="about_name">Name</string>
-    <string name="about_email">E-Mail</string>
-    <string name="about_phone">Phone</string>
-    <string name="about_website">Website</string>
-    <string name="about_other">Other</string>
-
-    <string name="about_name_error">Name cannot be blank</string>
-    <string name="about_email_error">E-Mail cannot be blank</string>
-    <string name="about_phone_error">Phone cannot be blank</string>
-    <string name="about_website_error">Website cannot be blank</string>
-    <string name="about_other_error">Other cannot be blank</string>
+    <string name="google_api_connection_failed">Connection to Google API Client Failed</string>
+    <string name="google_api_connection_suspended">Google API Client Suspended</string>
+    <string name="google_api_network_lost">Network Lost</string>
+    <string name="google_api_service_disconnected">Service Disconnected</string>
+    <string name="google_api_unknown">Unknown Reason</string>
 
 </resources>
