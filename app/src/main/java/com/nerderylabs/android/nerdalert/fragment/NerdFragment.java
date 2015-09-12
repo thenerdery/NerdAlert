@@ -1,7 +1,7 @@
-package com.nerderylabs.android.nerdalert.fragments;
+package com.nerderylabs.android.nerdalert.fragment;
 
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.adapters.RecyclerViewAdapter;
+import com.nerderylabs.android.nerdalert.adapter.RecyclerViewAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 
 import android.os.Bundle;

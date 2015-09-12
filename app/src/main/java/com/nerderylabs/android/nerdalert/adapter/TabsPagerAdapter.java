@@ -1,8 +1,8 @@
-package com.nerderylabs.android.nerdalert.adapters;
+package com.nerderylabs.android.nerdalert.adapter;
 
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.fragments.BeaconFragment;
-import com.nerderylabs.android.nerdalert.fragments.NerdFragment;
+import com.nerderylabs.android.nerdalert.fragment.BeaconFragment;
+import com.nerderylabs.android.nerdalert.fragment.NerdFragment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

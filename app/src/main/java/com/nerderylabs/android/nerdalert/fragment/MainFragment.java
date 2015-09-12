@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.fragments;
+package com.nerderylabs.android.nerdalert.fragment;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -9,11 +9,11 @@ import com.google.android.gms.nearby.messages.Strategy;
 
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.adapters.TabsPagerAdapter;
+import com.nerderylabs.android.nerdalert.adapter.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
-import com.nerderylabs.android.nerdalert.widgets.DelayedTextWatcher;
-import com.nerderylabs.android.nerdalert.widgets.NoSwipeViewPager;
+import com.nerderylabs.android.nerdalert.widget.DelayedTextWatcher;
+import com.nerderylabs.android.nerdalert.widget.NoSwipeViewPager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

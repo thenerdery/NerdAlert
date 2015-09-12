@@ -2,7 +2,7 @@ package com.nerderylabs.android.nerdalert.activity;
 
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.fragments.MainFragment;
+import com.nerderylabs.android.nerdalert.fragment.MainFragment;
 
 import android.content.Intent;
 import android.os.Build;

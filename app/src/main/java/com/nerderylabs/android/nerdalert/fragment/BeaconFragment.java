@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.fragments;
+package com.nerderylabs.android.nerdalert.fragment;
 
 import com.nerderylabs.android.nerdalert.R;
 
