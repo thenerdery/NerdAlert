@@ -15,8 +15,12 @@ public class Settings {
 
     private static final String PHOTOURL_KEY = TAG + "_photoUrl";
 
-    private Settings() {
+    private static final String PUBLISHING_KEY = TAG + "_publishing";
 
+    private static final String SUBSCRIBING_KEY = TAG + "_subscribing";
+
+    private Settings() {
+        // static class, no constructor
     }
 
     public static void setName(Context context, String name) {
@@ -34,6 +38,16 @@ public class Settings {
         persistString(context, PHOTOURL_KEY, photoUrl);
     }
 
+    public static void setPublishing(Context context, boolean publishing) {
+        Log.d(TAG, "setPublishing(" + publishing + ")");
+        persistBoolean(context, PUBLISHING_KEY, publishing);
+    }
+
+    public static void setSubscribing(Context context, boolean subscribing) {
+        Log.d(TAG, "setSubscribing(" + subscribing + ")");
+        persistBoolean(context, SUBSCRIBING_KEY, subscribing);
+    }
+
     public static String getName(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(NAME_KEY, "");
     }
@@ -46,10 +60,25 @@ public class Settings {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(PHOTOURL_KEY, "");
     }
 
+    public static boolean isPublishing(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PUBLISHING_KEY, false);
+    }
+
+    public static boolean isSubscribing(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SUBSCRIBING_KEY, false);
+    }
+
     private static void persistString(Context context, String key, String value) {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
+        editor.apply();
+    }
+
+    private static void persistBoolean(Context context, String key, boolean value) {
+        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(key, value);
         editor.apply();
     }
 }

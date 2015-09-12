@@ -15,4 +15,10 @@
     <string name="google_api_service_disconnected">Service Disconnected</string>
     <string name="google_api_unknown">Unknown Reason</string>
 
+    <string name="permissions_required">You must allow the requested permissions to use this feature.</string>
+    <string name="network_unavailable">Internet access required. Fix in \'Settings\' and try again.</string>
+
+    <string name="exercise_text">Exercise for the reader</string>
+    <string name="exercise_url">https://developers.google.com/nearby/messages/android/get-beacon-messages</string>
+
 </resources>

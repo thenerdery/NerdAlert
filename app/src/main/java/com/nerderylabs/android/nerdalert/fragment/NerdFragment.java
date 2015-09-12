@@ -19,8 +19,6 @@ public class NerdFragment extends BaseFragment {
 
     private static final String TAG = NerdFragment.class.getSimpleName();
 
-    private RecyclerView nerdRecyclerView;
-
     private RecyclerViewAdapter nerdAdapter;
 
     private List<Neighbor> nerdList = new ArrayList<>();
@@ -32,7 +30,7 @@ public class NerdFragment extends BaseFragment {
 
         View v = inflater.inflate(R.layout.fragment_nerds, container, false);
 
-        nerdRecyclerView = (RecyclerView) v.findViewById(R.id.nerd_recycler);
+        RecyclerView nerdRecyclerView = (RecyclerView) v.findViewById(R.id.nerd_recycler);
         nerdRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         nerdRecyclerView.setItemAnimator(new DefaultItemAnimator());
         nerdAdapter = new RecyclerViewAdapter(getContext(), nerdList, R.layout.neighbor_card);
@@ -41,18 +39,21 @@ public class NerdFragment extends BaseFragment {
         return v;
     }
 
-    @Override
-    public void onResume() {
+    public void addNeighbor(Neighbor neighbor) {
 
-        super.onResume();
+    }
 
-        nerdList.clear();
+    public void removeNeighbor(Neighbor neighbor) {
 
-        for (int i = 0; i < 100; i++) {
-            Neighbor nerd = new Neighbor(i + " Richard Banasiak " + i, "i void warranties...", null);
-            nerdList.add(nerd);
-        }
+    }
 
-        nerdAdapter.notifyDataSetChanged();
+    public void clearNeighborList() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                nerdList.clear();
+                nerdAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

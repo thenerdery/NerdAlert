@@ -1,21 +1,17 @@
 package com.nerderylabs.android.nerdalert.fragment;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.messages.Strategy;
-
-import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
+import com.nerderylabs.android.nerdalert.activity.NearbyInterface;
 import com.nerderylabs.android.nerdalert.adapter.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
 import com.nerderylabs.android.nerdalert.widget.DelayedTextWatcher;
 import com.nerderylabs.android.nerdalert.widget.NoSwipeViewPager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -27,20 +23,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainFragment.class.getSimpleName();
-
-    public static final Strategy MESSAGE_STRATEGY = new Strategy.Builder().setTtlSeconds(Constants.TTL_IN_SECONDS).build();
 
     View view;
 
     FloatingActionButton fab;
 
-    GoogleApiClient googleApiClient;
+    NearbyInterface nearbyInterface;
 
     Neighbor myInfo = new Neighbor();
 
@@ -50,13 +42,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
         // use a retained fragment to avoid re-publishing or re-subscribing upon orientation changes
         setRetainInstance(true);
-
-        // setup the Google API Client, requesting access to the Nearby Messages API
-        googleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
-                .addApi(Nearby.MESSAGES_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
     }
 
     @Nullable
@@ -85,21 +70,35 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         final EditText nameEditText = (EditText) view.findViewById(R.id.my_name);
         final EditText taglineEditText = (EditText) view.findViewById(R.id.my_tagline);
 
-        nameEditText.setText(Settings.getName(getContext()));
-        taglineEditText.setText(Settings.getTagline(getContext()));
+        String name = Settings.getName(getContext());
+        String tagline = Settings.getTagline(getContext());
+
+        myInfo.name = name;
+        myInfo.tagline = tagline;
+
+        nameEditText.setText(name);
+        taglineEditText.setText(tagline);
 
         // submit buttons are for lamers...
         DelayedTextWatcher watcher = new DelayedTextWatcher(new DelayedTextWatcher.Callback() {
             @Override
             public void afterTextChanged(Editable editableText) {
+                Context context = getContext();
+
+                // stop publishing if the info has changed
+                if(Settings.isPublishing(context)) {
+                    nearbyInterface.unpublish(myInfo);
+                }
                 if(nameEditText.getEditableText() == editableText) {
                     myInfo.name = editableText.toString();
-                    Settings.setName(getContext(), myInfo.name);
+                    Settings.setName(context, myInfo.name);
                 } else if(taglineEditText.getEditableText() == editableText) {
                     myInfo.tagline = editableText.toString();
-                    Settings.setTagline(getContext(), myInfo.tagline);
+                    Settings.setTagline(context, myInfo.tagline);
                 }
+
                 Log.d(TAG, "myInfo: " + myInfo.toJson());
+
             }
         });
 
@@ -109,115 +108,66 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     private void initializeFab() {
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
-
         fab.setOnClickListener(new View.OnClickListener() {
-            boolean state = false;
-
             @Override
             public void onClick(View v) {
-                state = !state;
-                if (state) {
-                    startSpinner();
-                    publish();
-                    subscribe();
+                Context context = getContext();
+                if (Settings.isPublishing(context) || Settings.isSubscribing(context)) {
+                    nearbyInterface.unpublish(myInfo);
+                    nearbyInterface.unsubscribe();
                 } else {
-                    unsubscribe();
-                    unpublish();
-                    stopSpinner();
+                    nearbyInterface.publish(myInfo);
+                    nearbyInterface.subscribe();
                 }
             }
         });
+
+        // first time through.  we shouldn't be active unless something didn't shutdown correctly.
+        Context context = getContext();
+        if(Settings.isPublishing(context) || Settings.isSubscribing(context)) {
+            startSpinner();
+        } else {
+            stopSpinner();
+        }
     }
 
-    private void startSpinner() {
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby_spinner));
-    }
-
-    private void stopSpinner() {
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby));
-    }
-
-
-    public void publishAndSubscribe() {
-        publish();
-        subscribe();
-    }
-
-
-    private void publish() {
-
-    }
-
-    private void unpublish() {
-
-    }
-
-    private void subscribe() {
-
-    }
-
-    private void unsubscribe() {
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        nearbyInterface = (NearbyInterface) getActivity();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(!googleApiClient.isConnected()) {
-            googleApiClient.connect();
+        PreferenceManager
+                .getDefaultSharedPreferences(getContext())
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Context context = getContext();
+
+        // we might not have a context yet
+        if(context != null) {
+            // update the UI to reflect our current Nearby state
+            if(Settings.isSubscribing(context) || Settings.isPublishing(context)) {
+                startSpinner();
+            } else {
+                stopSpinner();
+            }
         }
     }
 
-    @Override
-    public void onStop() {
-        unsubscribe();
-        unpublish();
-        googleApiClient.disconnect();
-        super.onStop();
+    // this should only be called by the OnSharedPreferenceChangeListener, to reflect the correct state
+    private void startSpinner() {
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby_spinner));
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Google API Client connected");
-        Nearby.Messages.getPermissionStatus(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-
-                    }
-                });
-
-
+    // this should only be called by the OnSharedPreferenceChangeListener, to reflect the correct state
+    private void stopSpinner() {
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby));
     }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        String text1 = getString(R.string.google_api_connection_suspended);
-        String text2 = "";
-        switch(i) {
-            case CAUSE_NETWORK_LOST:
-                text2 = getString(R.string.google_api_network_lost);
-                break;
-            case CAUSE_SERVICE_DISCONNECTED:
-                text2 = getString(R.string.google_api_service_disconnected);
-                break;
-            default:
-                text2 = getString(R.string.google_api_unknown);
-                break;
-        }
-        String error = text1 + ": " + text2;
-        Log.w(TAG, error);
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        String error = getString(R.string.google_api_connection_failed);
-        Log.e(TAG, error);
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-    }
-
-
 }
 
