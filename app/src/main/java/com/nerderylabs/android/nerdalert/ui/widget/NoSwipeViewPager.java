@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.widget;
+package com.nerderylabs.android.nerdalert.ui.widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

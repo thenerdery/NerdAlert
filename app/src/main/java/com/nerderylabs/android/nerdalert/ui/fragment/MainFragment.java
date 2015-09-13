@@ -1,12 +1,12 @@
-package com.nerderylabs.android.nerdalert.fragment;
+package com.nerderylabs.android.nerdalert.ui.fragment;
 
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.activity.NearbyInterface;
-import com.nerderylabs.android.nerdalert.adapter.TabsPagerAdapter;
+import com.nerderylabs.android.nerdalert.ui.activity.NearbyInterface;
+import com.nerderylabs.android.nerdalert.ui.adapter.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
-import com.nerderylabs.android.nerdalert.widget.DelayedTextWatcher;
-import com.nerderylabs.android.nerdalert.widget.NoSwipeViewPager;
+import com.nerderylabs.android.nerdalert.ui.widget.DelayedTextWatcher;
+import com.nerderylabs.android.nerdalert.ui.widget.NoSwipeViewPager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +29,8 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
     private static final String TAG = MainFragment.class.getSimpleName();
 
     View view;
+
+    NoSwipeViewPager viewPager;
 
     FloatingActionButton fab;
 
@@ -53,7 +55,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
 
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getContext(),
                 getActivity().getSupportFragmentManager());
-        NoSwipeViewPager viewPager = (NoSwipeViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (NoSwipeViewPager) view.findViewById(R.id.viewpager);
         viewPager.setAdapter(tabsPagerAdapter);
 
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);

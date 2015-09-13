@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.adapter;
+package com.nerderylabs.android.nerdalert.ui.adapter;
 
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;

@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.activity;
+package com.nerderylabs.android.nerdalert.ui.activity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -11,7 +11,8 @@ import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.NearbyMessagesStatusCodes;
 
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.fragment.MainFragment;
+import com.nerderylabs.android.nerdalert.ui.fragment.MainFragment;
+import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
 import com.nerderylabs.android.nerdalert.util.NearbyApiUtil;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -289,6 +291,9 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                             if (status.isSuccess()) {
                                 Log.i(TAG, "Nearby unsubscribe successful");
                                 Settings.setSubscribing(MainActivity.this, false);
+                                // clear the list of Neighbors since we're not subscribing anymore
+                                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+                                nerdFragment.clearNeighborList();
                             } else {
                                 Log.w(TAG, "Nearby unsubscribe unsuccessful");
                                 Settings.setSubscribing(MainActivity.this, true);
@@ -330,15 +335,42 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             @Override
             public void onFound(Message message) {
                 // found message
-                Log.d(TAG, "Message Found: " + NearbyApiUtil.parseNearbyMessage(message));
+                String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
+                Log.d(TAG, "Message Found: " + parsedMessage);
 
+                // magical way get the Nerds viewpager fragment
+                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+
+                if(nerdFragment != null) {
+                    Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                    nerdFragment.addNeighbor(neighbor);
+                }
             }
 
             @Override
             public void onLost(Message message) {
                 // lost message
-                Log.d(TAG, "Message Lost: " + NearbyApiUtil.parseNearbyMessage(message));
+                String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
+                Log.d(TAG, "Message Lost: " + parsedMessage);
+
+                // magical way get the Nerds viewpager fragment
+                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+
+                if (nerdFragment != null) {
+                    Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                    nerdFragment.removeNeighbor(neighbor);
+                }
             }
         };
     }
+
+    // Fragments added to a ViewPager via the FragmentPagerManager are auto-tagged when
+    // instantiated using the private static method FragmentPagerAdapter.makeFragmentName().
+    // This method reverses the tag format generated in order to retrieve the fragment.
+    private Fragment findViewPagerFragment(int viewPagerId, int index) {
+        return getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + viewPagerId + ":" + index);
+    }
+
 }
+

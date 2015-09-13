@@ -29,4 +29,35 @@ public class Neighbor {
         return gson.fromJson(json, Neighbor.class);
     }
 
+
+    // two Neighbor objects are equal if all their Strings are equal
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Neighbor neighbor = (Neighbor) o;
+
+        if (name != null ? !name.equals(neighbor.name) : neighbor.name != null) {
+            return false;
+        }
+        if (tagline != null ? !tagline.equals(neighbor.tagline) : neighbor.tagline != null) {
+            return false;
+        }
+        return !(photoUrl != null ? !photoUrl.equals(neighbor.photoUrl)
+                : neighbor.photoUrl != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (tagline != null ? tagline.hashCode() : 0);
+        result = 31 * result + (photoUrl != null ? photoUrl.hashCode() : 0);
+        return result;
+    }
 }

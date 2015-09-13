@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.fragment;
+package com.nerderylabs.android.nerdalert.ui.fragment;
 
 import android.support.v4.app.Fragment;
 
@@ -8,9 +8,8 @@ public class BaseFragment extends Fragment {
         try {
             return fragmentType.newInstance();
         } catch (Exception e) {
-            //NOTE: Intentionally do nothing
+            // do nothing
         }
-
         return null;
     }
 }

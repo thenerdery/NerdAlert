@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <com.nerderylabs.android.nerdalert.ui.widget.EmptyRecyclerView
         android:id="@+id/nerd_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp" />
 
-</FrameLayout>
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:textAllCaps="true"
+        android:textColor="@color/color_text_secondary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/nerds_text" />
+
+</LinearLayout>

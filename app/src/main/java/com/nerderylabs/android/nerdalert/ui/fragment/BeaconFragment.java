@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.fragment;
+package com.nerderylabs.android.nerdalert.ui.fragment;
 
 import com.nerderylabs.android.nerdalert.R;
 
@@ -24,7 +24,7 @@ public class BeaconFragment extends BaseFragment {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse(getString(R.string.exercise_url));
+                Uri uri = Uri.parse(getString(R.string.beacons_url));
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }

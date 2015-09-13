@@ -1,4 +1,4 @@
-package com.nerderylabs.android.nerdalert.widget;
+package com.nerderylabs.android.nerdalert.ui.widget;
 
 import android.text.Editable;
 import android.text.TextWatcher;
