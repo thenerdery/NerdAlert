@@ -15,9 +15,6 @@ public class NearbyApiUtil {
         // static class
     }
 
-    // request code to use when launching the resolution activity
-    public static final int REQUEST_RESOLVE_ERROR = 1001;
-
     // The Strategy for our Nearby messages.  The defaults are to allow messages to be exchanged
     // over any distance for 5 minutes. Other options are listed here:
     // https://developers.google.com/android/reference/com/google/android/gms/nearby/messages/Strategy

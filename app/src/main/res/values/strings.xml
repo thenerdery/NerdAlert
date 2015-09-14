@@ -20,7 +20,8 @@
     <string name="google_api_service_disconnected">Service Disconnected</string>
     <string name="google_api_unknown">Unknown Reason</string>
 
-    <string name="permissions_required">You must allow the requested permissions to use this feature.</string>
+    <string name="permission_denied_nearby">Permission not granted. Unable to communicate with Nearby devices.</string>
+    <string name="permission_denied_contacts">Permission not granted. Unable to load profile information.</string>
     <string name="network_unavailable">Internet access required. Fix in \'Settings\' and try again.</string>
 
 </resources>

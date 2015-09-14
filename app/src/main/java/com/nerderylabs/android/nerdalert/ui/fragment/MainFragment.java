@@ -1,5 +1,6 @@
 package com.nerderylabs.android.nerdalert.ui.fragment;
 
+import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.ui.activity.NearbyInterface;
 import com.nerderylabs.android.nerdalert.ui.adapter.TabsPagerAdapter;
@@ -8,8 +9,10 @@ import com.nerderylabs.android.nerdalert.settings.Settings;
 import com.nerderylabs.android.nerdalert.ui.widget.NoSwipeViewPager;
 import com.nerderylabs.android.nerdalert.util.ProfileUtil;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -67,7 +70,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        loadProfileInformation();
+        restoreUserInformation();
 
         initializeNametag();
 
@@ -76,11 +79,12 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         return view;
     }
 
-    private void loadProfileInformation() {
+    public void restoreUserInformation() {
         Context context = getContext();
         String name = Settings.getName(context);
         String tagline = Settings.getTagline(context);
-        Pair<String, Bitmap> profile = ProfileUtil.getUserProfile(context);
+
+        Pair<String, Bitmap> profile = loadPrivilegedProfileData();
 
         if(name.isEmpty()) {
             name = profile.first;
@@ -96,6 +100,21 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         if(photo != null) {
             myInfo.setBitmap(profile.second);
         }
+
+
+    }
+
+    private Pair<String, Bitmap> loadPrivilegedProfileData() {
+        // check to see if we have the necessary permissions in the new M permission model
+        int permission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS);
+        // if we don't, then request permission from the user. keep in mind we may never get it...
+        if(permission != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "READ_CONTACTS permission not granted.");
+            requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, Constants.REQUEST_ASK_PERMISSIONS);
+            return new Pair<>(null, null);
+        }
+
+        return ProfileUtil.getUserProfile(getContext());
     }
 
     private void initializeNametag() {

@@ -10,6 +10,7 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.NearbyMessagesStatusCodes;
 
+import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.ui.fragment.MainFragment;
 import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
@@ -19,8 +20,10 @@ import com.nerderylabs.android.nerdalert.util.NearbyApiUtil;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -152,17 +155,33 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == NearbyApiUtil.REQUEST_RESOLVE_ERROR) {
+        if(requestCode == Constants.REQUEST_GOOGLE_PLAY_ERROR) {
             resolvingNearbyPermissionError = false;
             if(resultCode == RESULT_OK) {
                 publish();
                 subscribe();
             } else if(resultCode == RESULT_CANCELED) {
                 Log.w(TAG, "User denied requested permissions.");
-                Toast.makeText(this, getString(R.string.permissions_required), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permission_denied_nearby), Toast.LENGTH_LONG).show();
             } else {
                 Log.e(TAG, "Failed to resolve error with code=" + resultCode);
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == Constants.REQUEST_ASK_PERMISSIONS) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "Permission Granted!");
+                MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                fragment.restoreUserInformation();
+            } else {
+                Log.w(TAG, "Permission Denied!");
+                Toast.makeText(this, getString(R.string.permission_denied_contacts), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -313,8 +332,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             if (!resolvingNearbyPermissionError) {
                 try {
                     resolvingNearbyPermissionError = true;
-                    status.startResolutionForResult(this,
-                            NearbyApiUtil.REQUEST_RESOLVE_ERROR);
+                    status.startResolutionForResult(this, Constants.REQUEST_GOOGLE_PLAY_ERROR);
 
                 } catch (IntentSender.SendIntentException e) {
                     e.printStackTrace();

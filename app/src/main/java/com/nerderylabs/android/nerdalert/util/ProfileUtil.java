@@ -28,21 +28,22 @@ public class ProfileUtil {
 
         Cursor c = context.getContentResolver()
                 .query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
-        String[] columnNames = c.getColumnNames();
-        c.moveToFirst();
-        for (String columnName : columnNames) {
-            String columnValue = c.getString(c.getColumnIndex(columnName));
-            if (columnName.equals(ContactsContract.Profile.DISPLAY_NAME)) {
-                if(columnValue != null) {
-                    name = columnValue;
-                }
-            } else if (columnName.equals(ContactsContract.Profile.PHOTO_THUMBNAIL_URI)) {
-                if(columnValue != null) {
-                    photo = columnValue;
+        if(c != null && c.moveToFirst()) {
+            String[] columnNames = c.getColumnNames();
+            for (String columnName : columnNames) {
+                String columnValue = c.getString(c.getColumnIndex(columnName));
+                if (columnName.equals(ContactsContract.Profile.DISPLAY_NAME)) {
+                    if(columnValue != null) {
+                        name = columnValue;
+                    }
+                } else if (columnName.equals(ContactsContract.Profile.PHOTO_THUMBNAIL_URI)) {
+                    if(columnValue != null) {
+                        photo = columnValue;
+                    }
                 }
             }
+            c.close();
         }
-        c.close();
 
         Log.d(TAG, "name: " + name + " | photo: " + photo);
 
