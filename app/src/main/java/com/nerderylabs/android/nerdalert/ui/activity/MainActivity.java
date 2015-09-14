@@ -354,29 +354,44 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             public void onFound(Message message) {
                 // found message
                 String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
-                Log.d(TAG, "Message Found: " + parsedMessage);
+                if(parsedMessage != null) {
+                    Log.d(TAG, "Message Found: " + parsedMessage);
 
-                // magical way get the Nerds viewpager fragment
-                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+                    // magical way get the Nerds viewpager fragment
+                    NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
 
-                if(nerdFragment != null) {
-                    Neighbor neighbor = Neighbor.fromJson(parsedMessage);
-                    nerdFragment.addNeighbor(neighbor);
+                    if(nerdFragment != null) {
+                        Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                        if(neighbor == null) {
+                            Log.w(TAG, "Unable to parse Neighbor object from message");
+                        } else {
+                            Log.d(TAG, "Adding neighbor: " + neighbor.toJson());
+                            nerdFragment.addNeighbor(neighbor);
+                        }
+                    }
                 }
+
             }
 
             @Override
             public void onLost(Message message) {
                 // lost message
                 String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
-                Log.d(TAG, "Message Lost: " + parsedMessage);
+                if(parsedMessage != null) {
+                    Log.d(TAG, "Message Lost: " + parsedMessage);
 
-                // magical way get the Nerds viewpager fragment
-                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+                    // magical way get the Nerds viewpager fragment
+                    NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
 
-                if (nerdFragment != null) {
-                    Neighbor neighbor = Neighbor.fromJson(parsedMessage);
-                    nerdFragment.removeNeighbor(neighbor);
+                    if (nerdFragment != null) {
+                        Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                        if(neighbor == null) {
+                            Log.w(TAG, "Unable to parse Neighbor object from message");
+                        } else {
+                            Log.d(TAG, "Removing neighbor: " + neighbor.toJson());
+                            nerdFragment.removeNeighbor(neighbor);
+                        }
+                    }
                 }
             }
         };

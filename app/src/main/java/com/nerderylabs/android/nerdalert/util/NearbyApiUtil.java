@@ -6,10 +6,13 @@ import com.google.android.gms.nearby.messages.Strategy;
 import com.google.gson.Gson;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.nio.charset.Charset;
 
 public class NearbyApiUtil {
+
+    private static final String TAG = NearbyApiUtil.class.getSimpleName();
 
     private NearbyApiUtil(){
         // static class
@@ -34,7 +37,12 @@ public class NearbyApiUtil {
         Gson gson = new Gson();
         String string = new String(nearbyMessage.getContent()).trim();
         NearbyMessage message = gson.fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), NearbyMessage.class);
-        return message.payload;
+        if(message == null) {
+            Log.w(TAG, "Unable to parse Nearby Message");
+            return null;
+        } else {
+            return message.payload;
+        }
     }
 
     // The NearbyMessage is a convenience class for wrapping a payload with a Google Play Services

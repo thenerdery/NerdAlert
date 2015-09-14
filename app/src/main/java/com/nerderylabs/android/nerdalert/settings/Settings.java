@@ -13,8 +13,6 @@ public class Settings {
 
     private static final String TAGLINE_KEY = TAG + "_tagline";
 
-    private static final String PHOTOURL_KEY = TAG + "_photoUrl";
-
     private static final String PUBLISHING_KEY = TAG + "_publishing";
 
     private static final String SUBSCRIBING_KEY = TAG + "_subscribing";
@@ -44,19 +42,19 @@ public class Settings {
     }
 
     public static String getName(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(NAME_KEY, "");
+        return retrieveString(context, NAME_KEY);
     }
 
     public static String getTagline(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(TAGLINE_KEY, "");
+        return retrieveString(context, TAGLINE_KEY);
     }
 
     public static boolean isPublishing(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PUBLISHING_KEY, false);
+        return retrieveBoolean(context, PUBLISHING_KEY);
     }
 
     public static boolean isSubscribing(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SUBSCRIBING_KEY, false);
+        return retrieveBoolean(context, SUBSCRIBING_KEY);
     }
 
     private static void persistString(Context context, String key, String value) {
@@ -71,5 +69,13 @@ public class Settings {
         final SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(key, value);
         editor.apply();
+    }
+
+    private static String retrieveString(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, "");
+    }
+
+    private static boolean retrieveBoolean(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, false);
     }
 }
