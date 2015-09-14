@@ -4,10 +4,12 @@ import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -38,9 +40,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
 
         Neighbor neighbor = neighbors.get(position);
-        holder.name.setText(neighbor.name);
-        holder.tagline.setText(neighbor.tagline);
-
+        if(neighbor.getName() != null) {
+            holder.name.setText(neighbor.getName());
+        }
+        if(neighbor.getTagline() != null) {
+            holder.tagline.setText(neighbor.getTagline());
+        }
+        if(neighbor.getBitmap() != null) {
+            holder.photo.setImageDrawable(new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
+        }
     }
 
     @Override
@@ -54,10 +62,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public TextView tagline;
 
+        public ImageView photo;
+
         public ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.neighbor_name);
             tagline = (TextView) itemView.findViewById(R.id.neighbor_tagline);
+            photo = (ImageView) itemView.findViewById(R.id.neighbor_photo);
         }
     }
 }

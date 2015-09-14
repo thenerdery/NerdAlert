@@ -57,14 +57,14 @@
                         app:layout_widthPercent="100%" />
 
                     <ImageView
-                        android:id="@+id/photo"
+                        android:id="@+id/my_photo"
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:layout_alignParentLeft="true"
                         android:layout_below="@id/nametag_subheader"
-                        android:src="@drawable/koala"
+                        android:src="@drawable/ic_contact_picture"
                         app:layout_widthPercent="30%" />
 
                     <android.support.design.widget.TextInputLayout
@@ -72,7 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/nametag_subheader"
-                        android:layout_toRightOf="@id/photo"
+                        android:layout_toRightOf="@id/my_photo"
                         app:layout_widthPercent="70%">
 
                         <EditText
@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/name_wrapper"
-                        android:layout_toRightOf="@id/photo"
+                        android:layout_toRightOf="@id/my_photo"
                         app:layout_widthPercent="75%">
 
                         <EditText
@@ -106,7 +106,7 @@
                         android:layout_height="14dp"
                         android:layout_marginTop="12dp"
                         android:background="@color/color_accent"
-                        android:layout_below="@id/photo"
+                        android:layout_below="@id/my_photo"
                         app:layout_widthPercent="100%" />
 
                 </android.support.percent.PercentRelativeLayout>

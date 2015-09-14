@@ -11,6 +11,10 @@ import java.nio.charset.Charset;
 
 public class NearbyApiUtil {
 
+    private NearbyApiUtil(){
+        // static class
+    }
+
     // request code to use when launching the resolution activity
     public static final int REQUEST_RESOLVE_ERROR = 1001;
 

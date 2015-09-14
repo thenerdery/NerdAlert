@@ -7,9 +7,13 @@ import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
 import com.nerderylabs.android.nerdalert.ui.widget.DelayedTextWatcher;
 import com.nerderylabs.android.nerdalert.ui.widget.NoSwipeViewPager;
+import com.nerderylabs.android.nerdalert.util.ProfileUtil;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -17,12 +21,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.text.Editable;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+
+import java.io.ByteArrayOutputStream;
 
 public class MainFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -61,25 +70,47 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        initializeTextInputs();
+        loadProfileInformation();
+
+        initializeNametag();
 
         initializeFab();
 
         return view;
     }
 
-    private void initializeTextInputs() {
+    private void loadProfileInformation() {
+        Context context = getContext();
+        String name = Settings.getName(context);
+        String tagline = Settings.getTagline(context);
+        Pair<String, Bitmap> profile = ProfileUtil.getUserProfile(context);
+
+        if(name.isEmpty()) {
+            name = profile.first;
+            myInfo.setName(name);
+        }
+
+        if(tagline.isEmpty()) {
+            tagline = ProfileUtil.getDeviceName();
+            myInfo.setTagline(tagline);
+        }
+
+        Bitmap photo = profile.second;
+        if(photo != null) {
+            myInfo.setBitmap(profile.second);
+        }
+    }
+
+    private void initializeNametag() {
         final EditText nameEditText = (EditText) view.findViewById(R.id.my_name);
         final EditText taglineEditText = (EditText) view.findViewById(R.id.my_tagline);
+        final ImageView photoImageView = (ImageView) view.findViewById(R.id.my_photo);
 
-        String name = Settings.getName(getContext());
-        String tagline = Settings.getTagline(getContext());
-
-        myInfo.name = name;
-        myInfo.tagline = tagline;
-
-        nameEditText.setText(name);
-        taglineEditText.setText(tagline);
+        nameEditText.setText(myInfo.getName());
+        taglineEditText.setText(myInfo.getTagline());
+        if(myInfo.getBitmap() != null) {
+            photoImageView.setImageDrawable(new BitmapDrawable(getResources(), myInfo.getBitmap()));
+        }
 
         // submit buttons are for lamers...
         DelayedTextWatcher watcher = new DelayedTextWatcher(new DelayedTextWatcher.Callback() {
@@ -92,11 +123,11 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
                     nearbyInterface.unpublish(myInfo);
                 }
                 if(nameEditText.getEditableText() == editableText) {
-                    myInfo.name = editableText.toString();
-                    Settings.setName(context, myInfo.name);
+                    myInfo.setName(editableText.toString());
+                    Settings.setName(context, editableText.toString());
                 } else if(taglineEditText.getEditableText() == editableText) {
-                    myInfo.tagline = editableText.toString();
-                    Settings.setTagline(context, myInfo.tagline);
+                    myInfo.setTagline(editableText.toString());
+                    Settings.setTagline(context, editableText.toString());
                 }
 
                 Log.d(TAG, "myInfo: " + myInfo.toJson());

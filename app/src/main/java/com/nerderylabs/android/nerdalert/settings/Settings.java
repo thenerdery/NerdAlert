@@ -33,11 +33,6 @@ public class Settings {
         persistString(context, TAGLINE_KEY, tagline);
     }
 
-    public static void setPhotoUrl(Context context, String photoUrl) {
-        Log.d(TAG, "setPhotoUrl(" + photoUrl + ")");
-        persistString(context, PHOTOURL_KEY, photoUrl);
-    }
-
     public static void setPublishing(Context context, boolean publishing) {
         Log.d(TAG, "setPublishing(" + publishing + ")");
         persistBoolean(context, PUBLISHING_KEY, publishing);
@@ -54,10 +49,6 @@ public class Settings {
 
     public static String getTagline(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(TAGLINE_KEY, "");
-    }
-
-    public static String getPhotoUrl(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(PHOTOURL_KEY, "");
     }
 
     public static boolean isPublishing(Context context) {
