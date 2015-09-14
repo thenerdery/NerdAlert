@@ -36,7 +36,7 @@ public class ProfileUtil {
                     if(columnValue != null) {
                         name = columnValue;
                     }
-                } else if (columnName.equals(ContactsContract.Profile.PHOTO_THUMBNAIL_URI)) {
+                } else if (columnName.equals(ContactsContract.Profile.PHOTO_URI)) {
                     if(columnValue != null) {
                         photo = columnValue;
                     }
