@@ -18,16 +18,15 @@ public class Neighbor {
 
     private transient Bitmap bitmap;
 
-    private static final Gson gson = new Gson();
+    private transient static final Gson gson = new Gson();
 
     public Neighbor() {
     }
 
-    public Neighbor(String name, String tagline, String encodedPhoto, Bitmap bitmap) {
+    public Neighbor(String name, String tagline, String encodedPhoto) {
         this.name = name;
         this.tagline = tagline;
         this.encodedPhoto = encodedPhoto;
-        this.bitmap = bitmap;
     }
 
     public String getName() {
@@ -59,14 +58,6 @@ public class Neighbor {
         this.encodedPhoto = base64Encode(bitmap);
     }
 
-    public String toJson() {
-        return gson.toJson(this);
-    }
-
-    public static Neighbor fromJson(String json) {
-        return gson.fromJson(json, Neighbor.class);
-    }
-
     private static String base64Encode(Bitmap bitmap) {
         if(bitmap != null) {
             Bitmap photo = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
@@ -87,6 +78,10 @@ public class Neighbor {
         }
     }
 
+    @Override
+    public String toString() {
+        return gson.toJson(this);
+    }
 
     // two Neighbor objects are equal if all their Strings are equal
     @Override

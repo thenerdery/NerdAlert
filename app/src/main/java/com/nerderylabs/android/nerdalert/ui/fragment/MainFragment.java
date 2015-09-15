@@ -151,7 +151,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
                     }
                 }
 
-                Log.d(TAG, "myInfo: " + myInfo.toJson());
+                Log.d(TAG, "myInfo: " + myInfo);
 
                 return false;
             }

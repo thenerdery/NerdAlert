@@ -30,16 +30,14 @@ public class NearbyApiUtil {
 
     public static Message newNearbyMessage(Context context, Neighbor payload) {
         Gson gson = new Gson();
-        String id = InstanceID.getInstance(context.getApplicationContext()).getId();
-        NearbyMessage message = new NearbyMessage(id, payload);
+        Wrapper message = new Wrapper(context, payload);
         return new Message(gson.toJson(message).getBytes(Charset.forName("UTF-8")));
     }
 
     public static Neighbor parseNearbyMessage(Message nearbyMessage) {
         Gson gson = new Gson();
         String string = new String(nearbyMessage.getContent()).trim();
-        System.out.println(string);
-        NearbyMessage message = gson.fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), NearbyMessage.class);
+        Wrapper message = gson.fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), Wrapper.class);
         if(message == null) {
             Log.w(TAG, "Unable to parse Nearby Message");
             return null;
@@ -48,15 +46,15 @@ public class NearbyApiUtil {
         }
     }
 
-    // The NearbyMessage is a convenience class for wrapping a payload with a Google Play Services
-    // instance identifier. This allows the Nearby API to distinguish identical payloads that
-    // originate from different devices.
-    private static class NearbyMessage {
+    // NearbyApiUtil.Wrapper is a convenience class for wrapping a payload with a Google Play
+    // Services instance identifier. This allows the Nearby API to distinguish identical payloads
+    // that originate from different devices.
+    private static class Wrapper {
         private String id;
         public Neighbor payload;
 
-        public NearbyMessage(String id, Neighbor payload) {
-            this.id = id;
+        public Wrapper(Context context, Neighbor payload) {
+            this.id = InstanceID.getInstance(context.getApplicationContext()).getId();
             this.payload = payload;
         }
     }
