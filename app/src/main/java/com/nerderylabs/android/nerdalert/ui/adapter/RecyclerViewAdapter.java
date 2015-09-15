@@ -5,6 +5,7 @@ import com.nerderylabs.android.nerdalert.model.Neighbor;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         if(neighbor.getBitmap() != null) {
             holder.photo.setImageDrawable(new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
+        } else {
+            holder.photo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_contact_picture));
         }
+
     }
 
     @Override

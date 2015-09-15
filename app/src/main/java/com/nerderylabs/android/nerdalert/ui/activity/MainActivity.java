@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             }
         } else {
             // finally, the part that actually uses the API we're demoing...
-            Message message = NearbyApiUtil.newNearbyMessage(this, myInfo.toJson());
+            Message message = NearbyApiUtil.newNearbyMessage(this, myInfo);
             PendingResult<Status> result = Nearby.Messages.publish(googleApiClient, message,
                     NearbyApiUtil.MESSAGE_STRATEGY);
             result.setResultCallback(new ResultCallback<Status>() {
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                 googleApiClient.connect();
             }
         } else {
-            Message message = NearbyApiUtil.newNearbyMessage(this, myInfo.toJson());
+            Message message = NearbyApiUtil.newNearbyMessage(this, myInfo);
             PendingResult<Status> result = Nearby.Messages.unpublish(googleApiClient, message);
             result.setResultCallback(new ResultCallback<Status>() {
                 @Override
@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             @Override
             public void onFound(Message message) {
                 // found message
-                String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
+                Neighbor parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
                 if(parsedMessage != null) {
                     Log.d(TAG, "Message Found: " + parsedMessage);
 
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                     NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
 
                     if(nerdFragment != null) {
-                        Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                        Neighbor neighbor = parsedMessage;
                         if(neighbor == null) {
                             Log.w(TAG, "Unable to parse Neighbor object from message");
                         } else {
@@ -381,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             @Override
             public void onLost(Message message) {
                 // lost message
-                String parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
+                Neighbor parsedMessage = NearbyApiUtil.parseNearbyMessage(message);
                 if(parsedMessage != null) {
                     Log.d(TAG, "Message Lost: " + parsedMessage);
 
@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                     NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
 
                     if (nerdFragment != null) {
-                        Neighbor neighbor = Neighbor.fromJson(parsedMessage);
+                        Neighbor neighbor = parsedMessage;
                         if(neighbor == null) {
                             Log.w(TAG, "Unable to parse Neighbor object from message");
                         } else {

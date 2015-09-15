@@ -5,6 +5,8 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.gson.Gson;
 
+import com.nerderylabs.android.nerdalert.model.Neighbor;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -26,16 +28,17 @@ public class NearbyApiUtil {
             .setDiscoveryMode(Strategy.DISCOVERY_MODE_DEFAULT)
             .build();
 
-    public static Message newNearbyMessage(Context context, String payload) {
+    public static Message newNearbyMessage(Context context, Neighbor payload) {
         Gson gson = new Gson();
         String id = InstanceID.getInstance(context.getApplicationContext()).getId();
         NearbyMessage message = new NearbyMessage(id, payload);
         return new Message(gson.toJson(message).getBytes(Charset.forName("UTF-8")));
     }
 
-    public static String parseNearbyMessage(Message nearbyMessage) {
+    public static Neighbor parseNearbyMessage(Message nearbyMessage) {
         Gson gson = new Gson();
         String string = new String(nearbyMessage.getContent()).trim();
+        System.out.println(string);
         NearbyMessage message = gson.fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), NearbyMessage.class);
         if(message == null) {
             Log.w(TAG, "Unable to parse Nearby Message");
@@ -50,9 +53,9 @@ public class NearbyApiUtil {
     // originate from different devices.
     private static class NearbyMessage {
         private String id;
-        public String payload;
+        public Neighbor payload;
 
-        public NearbyMessage(String id, String payload) {
+        public NearbyMessage(String id, Neighbor payload) {
             this.id = id;
             this.payload = payload;
         }
