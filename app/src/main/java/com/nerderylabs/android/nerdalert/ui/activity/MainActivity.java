@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
         unsubscribe();
         googleApiClient.disconnect();
 
+        // sometimes the app dies before the callbacks complete, so let's force the
+        // unpublish/unsubscribe state so the FAB isn't spinning when the app starts back up.
+        Settings.setPublishing(this, false);
+        Settings.setSubscribing(this, false);
+
         super.onStop();
     }
 
@@ -197,8 +202,6 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
 
         publishedInfo = myInfo;
 
-        Settings.setPublishing(this, true);
-
         // Cannot proceed without a connected GoogleApiClient. Reconnect and execute the pending
         // task in onConnected().
         if (!googleApiClient.isConnected()) {
@@ -216,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                     if (status.isSuccess()) {
                         // we're done publishing!
                         Log.i(TAG, "Nearby publish successful");
+                        Settings.setPublishing(MainActivity.this, true);
                     } else {
                         Log.w(TAG, "Nearby publish unsuccessful");
                         Settings.setPublishing(MainActivity.this, false);
@@ -281,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                         public void onResult(Status status) {
                             if (status.isSuccess()) {
                                 Log.i(TAG, "Nearby subscribe successful");
+                                Settings.setSubscribing(MainActivity.this, true);
                             } else {
                                 Log.w(TAG, "Nearby subscribe unsuccessful");
                                 Settings.setSubscribing(MainActivity.this, false);
