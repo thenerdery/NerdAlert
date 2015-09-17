@@ -110,7 +110,8 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         // if we don't, then request permission from the user. keep in mind we may never get it...
         if(permission != PackageManager.PERMISSION_GRANTED) {
             Log.w(TAG, "READ_CONTACTS permission not granted.");
-            requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, Constants.REQUEST_ASK_PERMISSIONS);
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                    Constants.REQUEST_ASK_PERMISSIONS);
             return new Pair<>(null, null);
         }
 
@@ -129,37 +130,53 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
             photoImageView.setImageDrawable(new BitmapDrawable(getResources(), myInfo.getBitmap()));
         }
 
-        // listen for changes
-        EditText.OnEditorActionListener listener = new EditText.OnEditorActionListener() {
+        // listen for focus change
+        View.OnFocusChangeListener focusListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    persistNametagValues((TextView) v);
+                }
+            }
+        };
+
+        // listen for the done key
+        EditText.OnEditorActionListener doneListener = new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE) {
-                    Context context = getContext();
-                    // stop publishing if the info has changed
-                    if(Settings.isPublishing(context)) {
-                        nearbyInterface.unpublish(myInfo);
-                    }
-                    switch(v.getId()) {
-                        case R.id.my_name:
-                            myInfo.setName(v.getEditableText().toString());
-                            Settings.setName(context, v.getEditableText().toString());
-                            break;
-                        case R.id.my_tagline:
-                            myInfo.setTagline(v.getEditableText().toString());
-                            Settings.setTagline(context, v.getEditableText().toString());
-                            break;
-                    }
+                    persistNametagValues(v);
                 }
-
-                Log.d(TAG, "myInfo: " + myInfo);
-
                 return false;
             }
         };
 
-        nameEditText.setOnEditorActionListener(listener);
-        taglineEditText.setOnEditorActionListener(listener);
+        nameEditText.setOnEditorActionListener(doneListener);
+        taglineEditText.setOnEditorActionListener(doneListener);
 
+        nameEditText.setOnFocusChangeListener(focusListener);
+        taglineEditText.setOnFocusChangeListener(focusListener);
+
+    }
+
+    private void persistNametagValues(TextView view) {
+        Context context = getContext();
+        // stop publishing if the info has changed
+        if(Settings.isPublishing(context)) {
+            nearbyInterface.unpublish(myInfo);
+            nearbyInterface.unsubscribe();
+        }
+        switch(view.getId()) {
+            case R.id.my_name:
+                myInfo.setName(view.getEditableText().toString());
+                Settings.setName(context, view.getEditableText().toString());
+                break;
+            case R.id.my_tagline:
+                myInfo.setTagline(view.getEditableText().toString());
+                Settings.setTagline(context, view.getEditableText().toString());
+                break;
+        }
+        Log.d(TAG, "myInfo: " + myInfo);
     }
 
     private void initializeFab() {

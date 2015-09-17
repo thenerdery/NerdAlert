@@ -83,7 +83,7 @@
                             android:textSize="14sp"
                             android:inputType="textPersonName"
                             android:hint="@string/nametag_name"
-                            android:imeOptions="actionDone"/>
+                            android:imeOptions="actionDone|flagNoExtractUi"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -102,7 +102,7 @@
                             android:textSize="14sp"
                             android:inputType="textAutoComplete"
                             android:hint="@string/nametag_tagline"
-                            android:imeOptions="actionDone"/>
+                            android:imeOptions="actionDone|flagNoExtractUi"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <View
