@@ -9,13 +9,17 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.NearbyMessagesStatusCodes;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.SubscribeCallback;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
 
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.ui.fragment.MainFragment;
-import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
+import com.nerderylabs.android.nerdalert.ui.fragment.MainFragment;
+import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
 import com.nerderylabs.android.nerdalert.util.NearbyApiUtil;
 
 import android.content.Intent;
@@ -66,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
         setContentView(R.layout.activity_main);
 
         // setup the Google API Client, requesting access to the Nearby Messages API
-        googleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+        // DO NOT use the application context here, otherwise the Nearby API will fail with the
+        // following error when publishing/subscribing:
+        //    Attempting to perform a high-power operation from a non-Activity Context
+        googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -150,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         String error = getString(R.string.google_api_connection_failed);
         Log.e(TAG, error);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
@@ -211,11 +218,24 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
         } else {
             // finally, the part that actually uses the API we're demoing...
             Message message = NearbyApiUtil.newNearbyMessage(this, myInfo);
-            PendingResult<Status> result = Nearby.Messages.publish(googleApiClient, message,
-                    NearbyApiUtil.MESSAGE_STRATEGY);
+
+            PublishOptions.Builder builder = new PublishOptions.Builder();
+            builder.setStrategy(NearbyApiUtil.MESSAGE_STRATEGY);
+            builder.setCallback(new PublishCallback() {
+                @Override
+                public void onExpired() {
+                    Log.i(TAG, "PublishCallback.onExpired(): No longer publishing");
+                    Settings.setPublishing(MainActivity.this, false);
+                }
+            });
+            PublishOptions options = builder.build();
+
+            PendingResult<Status> result = Nearby.Messages
+                    .publish(googleApiClient, message, options);
+
             result.setResultCallback(new ResultCallback<Status>() {
                 @Override
-                public void onResult(Status status) {
+                public void onResult(@NonNull Status status) {
                     if (status.isSuccess()) {
                         // we're done publishing!
                         Log.i(TAG, "Nearby publish successful");
@@ -251,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             PendingResult<Status> result = Nearby.Messages.unpublish(googleApiClient, message);
             result.setResultCallback(new ResultCallback<Status>() {
                 @Override
-                public void onResult(Status status) {
+                public void onResult(@NonNull Status status) {
                     if (status.isSuccess()) {
                         Log.i(TAG, "Nearby unpublish successful");
                         Settings.setPublishing(MainActivity.this, false);
@@ -278,11 +298,21 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                 googleApiClient.connect();
             }
         } else {
-            Nearby.Messages.subscribe(googleApiClient, messageListener,
-                    NearbyApiUtil.MESSAGE_STRATEGY)
-                    .setResultCallback(new ResultCallback<Status>() {
+            SubscribeOptions.Builder builder = new SubscribeOptions.Builder();
+            builder.setStrategy(NearbyApiUtil.MESSAGE_STRATEGY);
+            builder.setCallback(new SubscribeCallback() {
+                @Override
+                public void onExpired() {
+                    Log.i(TAG, "SubscribeCallback.onExpired(): No longer subscribing");
+                    Settings.setSubscribing(MainActivity.this, false);
+                }
+            });
+            SubscribeOptions options = builder.build();
+
+            Nearby.Messages.subscribe(googleApiClient, messageListener, options).setResultCallback(
+                    new ResultCallback<Status>() {
                         @Override
-                        public void onResult(Status status) {
+                        public void onResult(@NonNull Status status) {
                             if (status.isSuccess()) {
                                 Log.i(TAG, "Nearby subscribe successful");
                                 Settings.setSubscribing(MainActivity.this, true);
@@ -311,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                     .setResultCallback(new ResultCallback<Status>() {
 
                         @Override
-                        public void onResult(Status status) {
+                        public void onResult(@NonNull Status status) {
                             if (status.isSuccess()) {
                                 Log.i(TAG, "Nearby unsubscribe successful");
                                 Settings.setSubscribing(MainActivity.this, false);
