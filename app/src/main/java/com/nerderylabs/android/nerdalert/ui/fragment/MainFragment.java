@@ -2,10 +2,10 @@ package com.nerderylabs.android.nerdalert.ui.fragment;
 
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.ui.activity.NearbyInterface;
-import com.nerderylabs.android.nerdalert.ui.adapter.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 import com.nerderylabs.android.nerdalert.settings.Settings;
+import com.nerderylabs.android.nerdalert.ui.activity.NearbyInterface;
+import com.nerderylabs.android.nerdalert.ui.adapter.TabsPagerAdapter;
 import com.nerderylabs.android.nerdalert.ui.widget.NoSwipeViewPager;
 import com.nerderylabs.android.nerdalert.util.ProfileUtil;
 
@@ -28,6 +28,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +48,8 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
     NearbyInterface nearbyInterface;
 
     Neighbor myInfo = new Neighbor();
+
+    Boolean isProgressIndicatorShowing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -198,9 +202,9 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         // first time through.  we shouldn't be active unless something didn't shutdown correctly.
         Context context = getContext();
         if(Settings.isPublishing(context) || Settings.isSubscribing(context)) {
-            startSpinner();
+            startProgressIndicator();
         } else {
-            stopSpinner();
+            stopProgressIndicator();
         }
     }
 
@@ -226,21 +230,32 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         if(context != null) {
             // update the UI to reflect our current Nearby state
             if(Settings.isSubscribing(context) || Settings.isPublishing(context)) {
-                startSpinner();
+                startProgressIndicator();
             } else {
-                stopSpinner();
+                stopProgressIndicator();
             }
         }
     }
 
     // this should only be called by the OnSharedPreferenceChangeListener, to reflect the correct state
-    private void startSpinner() {
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby_spinner));
+    private void startProgressIndicator() {
+        if (!isProgressIndicatorShowing) {
+            fab.setImageDrawable(
+                    ContextCompat.getDrawable(getContext(), R.drawable.progress_indicator));
+            Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+            rotate.setRepeatCount(Animation.INFINITE);
+            fab.startAnimation(rotate);
+            isProgressIndicatorShowing = true;
+        }
     }
 
     // this should only be called by the OnSharedPreferenceChangeListener, to reflect the correct state
-    private void stopSpinner() {
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby));
+    private void stopProgressIndicator() {
+        if (isProgressIndicatorShowing) {
+            fab.setAnimation(null);
+            fab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_nearby));
+            isProgressIndicatorShowing = false;
+        }
     }
 }
 
