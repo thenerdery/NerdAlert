@@ -55,17 +55,17 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
-    View view;
+    private View view;
 
-    NoSwipeViewPager viewPager;
+    private NoSwipeViewPager viewPager;
 
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
 
-    NearbyInterface nearbyInterface;
+    private NearbyInterface nearbyInterface;
 
-    Neighbor myInfo = new Neighbor();
+    private final Neighbor myInfo = new Neighbor();
 
-    Boolean isProgressIndicatorShowing = false;
+    private Boolean isProgressIndicatorShowing = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

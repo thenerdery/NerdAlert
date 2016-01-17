@@ -35,11 +35,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = RecyclerViewAdapter.class.getSimpleName();
 
-    private Context context;
+    private final Context context;
 
-    private List<Neighbor> neighbors;
+    private final List<Neighbor> neighbors;
 
-    private int layout;
+    private final int layout;
 
     public RecyclerViewAdapter(Context context, List<Neighbor> neighbors, int layout) {
         this.context = context;
@@ -78,11 +78,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name;
+        public final TextView name;
 
-        public TextView tagline;
+        public final TextView tagline;
 
-        public ImageView photo;
+        public final ImageView photo;
 
         public ViewHolder(View itemView) {
             super(itemView);

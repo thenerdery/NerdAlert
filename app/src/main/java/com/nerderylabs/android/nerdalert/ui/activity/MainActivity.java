@@ -60,12 +60,12 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
 
     private static final String MAIN_FRAGMENT_TAG = TAG + "_main_fragment_tag";
 
-    GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
 
     // Tracks if we are currently resolving an error related to Nearby permissions. Used to avoid
     // duplicate Nearby permission dialogs if the user initiates both subscription and publication
     // actions without having opted into Nearby.
-    public boolean resolvingNearbyPermissionError = false;
+    private boolean resolvingNearbyPermissionError = false;
 
     // The listener that receives new Nearby messages when subscribing
     private MessageListener messageListener;

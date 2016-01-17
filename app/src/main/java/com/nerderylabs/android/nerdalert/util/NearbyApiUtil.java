@@ -66,8 +66,10 @@ public class NearbyApiUtil {
     // Services instance identifier. This allows the Nearby API to distinguish identical payloads
     // that originate from different devices.
     private static class Wrapper {
-        private String id;
-        public Neighbor payload;
+
+        private final String id;
+
+        public final Neighbor payload;
 
         public Wrapper(Context context, Neighbor payload) {
             this.id = InstanceID.getInstance(context.getApplicationContext()).getId();

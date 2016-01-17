@@ -30,12 +30,13 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/ic_contact_picture"
+            android:contentDescription="@string/accessibility_neighbor_photo"
             app:layout_widthPercent="30%" />
 
         <TextView
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/neighbor_photo"
+            android:layout_toEndOf="@id/neighbor_photo"
             android:paddingBottom="24dp"
             android:textSize="18sp"
             app:layout_widthPercent="70%" />
@@ -53,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/neighbor_photo"
+            android:layout_toEndOf="@id/neighbor_photo"
             android:paddingTop="24dp"
             android:textSize="18sp"
             app:layout_widthPercent="70%" />

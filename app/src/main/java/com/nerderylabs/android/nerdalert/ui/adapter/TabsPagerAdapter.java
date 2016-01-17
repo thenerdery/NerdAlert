@@ -25,8 +25,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import java.util.Locale;
-
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     final static private String TAG = TabsPagerAdapter.class.getSimpleName();
@@ -35,7 +33,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         NERDS(R.string.title_nerds),
         BEACONS(R.string.title_beacons);
 
-        private int resourceId;
+        private final int resourceId;
 
         Tabs(int resourceId) {
             this.resourceId = resourceId;
@@ -69,7 +67,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
         switch (position) {
             case 0:
                 return context.getString(Tabs.NERDS.resourceId);

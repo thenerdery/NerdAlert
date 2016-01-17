@@ -37,7 +37,7 @@ public class NerdFragment extends BaseFragment {
 
     private RecyclerViewAdapter nerdAdapter;
 
-    private List<Neighbor> nerdList = new ArrayList<>();
+    private final List<Neighbor> nerdList = new ArrayList<>();
 
 
     @Override

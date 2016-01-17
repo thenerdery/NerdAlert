@@ -24,4 +24,7 @@
     <string name="permission_denied_contacts">Permission not granted. Unable to load profile information.</string>
     <string name="network_unavailable">Internet access required. Fix in \'Settings\' and try again.</string>
 
+    <string name="accessibility_my_photo">My Photo</string>
+    <string name="accessibility_neighbor_photo">Neighbor Photo</string>
+
 </resources>
