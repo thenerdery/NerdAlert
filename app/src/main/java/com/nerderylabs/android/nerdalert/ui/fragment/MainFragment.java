@@ -31,6 +31,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -148,6 +150,11 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         taglineEditText.setText(myInfo.getTagline());
         if(myInfo.getBitmap() != null) {
             photoImageView.setImageDrawable(new BitmapDrawable(getResources(), myInfo.getBitmap()));
+        } else {
+            Drawable photo = ContextCompat.getDrawable(getContext(), R.drawable.ic_contact_photo);
+            DrawableCompat
+                    .setTint(photo, ContextCompat.getColor(getContext(), R.color.color_primary));
+            photoImageView.setImageDrawable(photo);
         }
 
         // listen for focus change
