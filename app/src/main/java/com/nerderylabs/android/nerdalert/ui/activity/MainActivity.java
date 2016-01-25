@@ -33,9 +33,10 @@ import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
+import com.nerderylabs.android.nerdalert.model.Tabs;
 import com.nerderylabs.android.nerdalert.settings.Settings;
 import com.nerderylabs.android.nerdalert.ui.fragment.MainFragment;
-import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
+import com.nerderylabs.android.nerdalert.ui.fragment.TabFragment;
 import com.nerderylabs.android.nerdalert.util.NearbyApiUtil;
 
 import android.content.Intent;
@@ -362,8 +363,12 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                                 Log.i(TAG, "Nearby unsubscribe successful");
                                 Settings.setSubscribing(MainActivity.this, false);
                                 // clear the list of Neighbors since we're not subscribing anymore
-                                NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
+                                TabFragment nerdFragment = (TabFragment) findViewPagerFragment(
+                                        R.id.viewpager, Tabs.NERDS.getTabIndex());
                                 nerdFragment.clearNeighborList();
+                                TabFragment beaconFragment = (TabFragment) findViewPagerFragment(
+                                        R.id.viewpager, Tabs.BEACONS.getTabIndex());
+                                beaconFragment.clearNeighborList();
                             } else {
                                 Log.w(TAG, "Nearby unsubscribe unsuccessful");
                                 Settings.setSubscribing(MainActivity.this, true);
@@ -408,16 +413,19 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
 
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
                 if(neighbor != null) {
-
-                    // magical way get the Nerds viewpager fragment
-                    NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
-
-                    if(nerdFragment != null) {
+                    TabFragment tabFragment;
+                    if (message.getType().equals("beacon")) {
+                        tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
+                                Tabs.BEACONS.getTabIndex());
+                    } else {
+                        tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
+                                Tabs.NERDS.getTabIndex());
+                    }
+                    if (tabFragment != null) {
                         Log.d(TAG, "Adding neighbor: " + neighbor);
-                        nerdFragment.addNeighbor(neighbor);
+                        tabFragment.addNeighbor(neighbor);
                     }
                 }
-
             }
 
             @Override
@@ -427,13 +435,17 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
 
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
                 if(neighbor != null) {
-
-                    // magical way get the Nerds viewpager fragment
-                    NerdFragment nerdFragment = (NerdFragment) findViewPagerFragment(R.id.viewpager, 0);
-
-                    if (nerdFragment != null) {
-                        Log.d(TAG, "Removing neighbor: " + neighbor);
-                        nerdFragment.removeNeighbor(neighbor);
+                    TabFragment tabFragment;
+                    if (message.getType().equals("beacon")) {
+                        tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
+                                Tabs.BEACONS.getTabIndex());
+                    } else {
+                        tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
+                                Tabs.NERDS.getTabIndex());
+                    }
+                    if (tabFragment != null) {
+                        Log.d(TAG, "Adding neighbor: " + neighbor);
+                        tabFragment.removeNeighbor(neighbor);
                     }
                 }
             }

@@ -18,6 +18,7 @@ package com.nerderylabs.android.nerdalert.ui.fragment;
 
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
+import com.nerderylabs.android.nerdalert.model.Tabs;
 import com.nerderylabs.android.nerdalert.ui.adapter.RecyclerViewAdapter;
 import com.nerderylabs.android.nerdalert.ui.widget.EmptyRecyclerView;
 
@@ -27,31 +28,42 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NerdFragment extends BaseFragment {
+public class TabFragment extends BaseFragment {
 
-    private static final String TAG = NerdFragment.class.getSimpleName();
+    private static final String TAG = TabFragment.class.getSimpleName();
 
-    private RecyclerViewAdapter nerdAdapter;
+    public static final String TAB_EXTRA = TAG + "_tab_extra";
 
-    private final List<Neighbor> nerdList = new ArrayList<>();
+    private RecyclerViewAdapter neighborAdapter;
 
+    private final List<Neighbor> neighborList = new ArrayList<>();
+
+    private Tabs tab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_nerds, container, false);
+        if (getArguments() != null) {
+            tab = (Tabs) getArguments().getSerializable(TAB_EXTRA);
+        }
 
-        EmptyRecyclerView nerdRecyclerView = (EmptyRecyclerView) v.findViewById(R.id.nerd_recycler);
-        nerdRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        nerdRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        nerdRecyclerView.setEmptyView(v.findViewById(android.R.id.empty));
-        nerdAdapter = new RecyclerViewAdapter(getContext(), nerdList, R.layout.neighbor_card);
-        nerdRecyclerView.setAdapter(nerdAdapter);
+        View v = inflater.inflate(R.layout.fragment_tab, container, false);
+
+        TextView emptyView = (TextView) v.findViewById(android.R.id.empty);
+        emptyView.setText(tab.getEmptyViewPagerStringId());
+
+        EmptyRecyclerView recyclerView = (EmptyRecyclerView) v.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setEmptyView(emptyView);
+        neighborAdapter = new RecyclerViewAdapter(getContext(), neighborList, tab);
+        recyclerView.setAdapter(neighborAdapter);
 
         return v;
     }
@@ -61,9 +73,9 @@ public class NerdFragment extends BaseFragment {
             @Override
             public void run() {
                 // don't add duplicates
-                if(!nerdList.contains(neighbor)) {
-                    nerdList.add(neighbor);
-                    nerdAdapter.notifyDataSetChanged();
+                if (!neighborList.contains(neighbor)) {
+                    neighborList.add(neighbor);
+                    neighborAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -73,8 +85,8 @@ public class NerdFragment extends BaseFragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                nerdList.remove(neighbor);
-                nerdAdapter.notifyDataSetChanged();
+                neighborList.remove(neighbor);
+                neighborAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -83,8 +95,8 @@ public class NerdFragment extends BaseFragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                nerdList.clear();
-                nerdAdapter.notifyDataSetChanged();
+                neighborList.clear();
+                neighborAdapter.notifyDataSetChanged();
             }
         });
     }

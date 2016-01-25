@@ -9,10 +9,8 @@
     <string name="nametag_name">Name</string>
     <string name="nametag_tagline">Tagline</string>
 
-    <string name="nerds_text">No Nerds Nearby</string>
-
-    <string name="beacons_text">Exercise for the reader</string>
-    <string name="beacons_url">https://goo.gl/3P5KnI</string>
+    <string name="empty_text_nerds">No Nerds Nearby</string>
+    <string name="empty_text_beacons">No Beacons Nearby</string>
 
     <string name="google_api_connection_failed">Connection to Google API Client Failed</string>
     <string name="google_api_connection_suspended">Google API Client Suspended</string>

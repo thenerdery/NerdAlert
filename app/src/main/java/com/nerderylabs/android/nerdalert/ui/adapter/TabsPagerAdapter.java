@@ -16,11 +16,12 @@
 
 package com.nerderylabs.android.nerdalert.ui.adapter;
 
-import com.nerderylabs.android.nerdalert.R;
-import com.nerderylabs.android.nerdalert.ui.fragment.BeaconFragment;
-import com.nerderylabs.android.nerdalert.ui.fragment.NerdFragment;
+import com.nerderylabs.android.nerdalert.model.Tabs;
+import com.nerderylabs.android.nerdalert.ui.fragment.BaseFragment;
+import com.nerderylabs.android.nerdalert.ui.fragment.TabFragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,17 +29,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     final static private String TAG = TabsPagerAdapter.class.getSimpleName();
-
-    private enum Tabs {
-        NERDS(R.string.title_nerds),
-        BEACONS(R.string.title_beacons);
-
-        private final int resourceId;
-
-        Tabs(int resourceId) {
-            this.resourceId = resourceId;
-        }
-    }
 
     final private Context context;
 
@@ -49,15 +39,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
-        switch (position) {
-            case 0:
-                return NerdFragment.newInstance(NerdFragment.class);
-            case 1:
-                return BeaconFragment.newInstance(BeaconFragment.class);
+        TabFragment tabFragment = BaseFragment.newInstance(TabFragment.class);
+        Tabs tab = getTabForIndex(position);
+        if (tab != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(TabFragment.TAB_EXTRA, tab);
+            tabFragment.setArguments(bundle);
         }
-
-        return null;
+        return tabFragment;
     }
 
     @Override
@@ -67,11 +56,19 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return context.getString(Tabs.NERDS.resourceId);
-            case 1:
-                return context.getString(Tabs.BEACONS.resourceId);
+        Tabs tab = getTabForIndex(position);
+        if (tab != null) {
+            int resourceId = tab.getTitleStringId();
+            return context.getString(resourceId);
+        }
+        return "";
+    }
+
+    private Tabs getTabForIndex(int index) {
+        for (Tabs tab : Tabs.values()) {
+            if (tab.getTabIndex() == index) {
+                return tab;
+            }
         }
         return null;
     }

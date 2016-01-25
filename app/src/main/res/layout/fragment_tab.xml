@@ -17,10 +17,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
+    <com.nerderylabs.android.nerdalert.ui.widget.EmptyRecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
     <TextView
+        android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -28,18 +34,6 @@
         android:layout_marginBottom="32dp"
         android:textAllCaps="true"
         android:textColor="@color/color_text_secondary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="@string/beacons_text" />
-
-    <TextView
-        android:id="@+id/beacon_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_gravity="center"
-        android:textColor="@color/color_accent"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="@string/beacons_url" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 </LinearLayout>

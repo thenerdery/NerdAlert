@@ -18,10 +18,13 @@ package com.nerderylabs.android.nerdalert.ui.adapter;
 
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
+import com.nerderylabs.android.nerdalert.model.Tabs;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,17 +42,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private final List<Neighbor> neighbors;
 
-    private final int layout;
+    private final Tabs tab;
 
-    public RecyclerViewAdapter(Context context, List<Neighbor> neighbors, int layout) {
+    public RecyclerViewAdapter(Context context, List<Neighbor> neighbors, Tabs tab) {
         this.context = context;
         this.neighbors = neighbors;
-        this.layout = layout;
+        this.tab = tab;
     }
 
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.row_neighbor, parent, false);
         return new ViewHolder(v);
     }
 
@@ -66,7 +70,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if(neighbor.getBitmap() != null) {
             holder.photo.setImageDrawable(new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
         } else {
-            holder.photo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_contact_picture));
+            Drawable photo = ContextCompat.getDrawable(context, tab.getEmptyPhotoDrawableId());
+            DrawableCompat.setTint(photo, ContextCompat.getColor(context, R.color.color_primary));
+            holder.photo.setImageDrawable(photo);
         }
 
     }

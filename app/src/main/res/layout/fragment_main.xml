@@ -79,7 +79,7 @@
                         android:paddingRight="10dp"
                         android:layout_alignParentStart="true"
                         android:layout_below="@id/nametag_subheader"
-                        android:src="@drawable/ic_contact_picture"
+                        android:src="@drawable/ic_contact_photo"
                         android:contentDescription="@string/accessibility_my_photo"
                         app:layout_widthPercent="30%" />
 
