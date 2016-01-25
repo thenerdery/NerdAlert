@@ -63,7 +63,7 @@ public class Neighbor {
 
     public Bitmap getBitmap() {
         // we might not have a decoded bitmap yet (if this object was received from another device)
-        if(bitmap == null) {
+        if (bitmap == null) {
             bitmap = base64Decode(encodedPhoto);
         }
         return bitmap;
@@ -75,7 +75,7 @@ public class Neighbor {
     }
 
     private static String base64Encode(Bitmap bitmap) {
-        if(bitmap != null) {
+        if (bitmap != null) {
             Bitmap photo = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.JPEG, 80, baos);
@@ -86,7 +86,7 @@ public class Neighbor {
     }
 
     private static Bitmap base64Decode(String data) {
-        if(data != null) {
+        if (data != null) {
             byte[] byteArray = Base64.decode(data, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, null);
         } else {

@@ -32,7 +32,9 @@ public class NearbyApiUtil {
 
     private static final String TAG = NearbyApiUtil.class.getSimpleName();
 
-    private NearbyApiUtil(){
+    private static final String TYPE = "nerd"; // not "beacon" - those are for beacons :)
+
+    private NearbyApiUtil() {
         // static class
     }
 
@@ -46,15 +48,20 @@ public class NearbyApiUtil {
 
     public static Message newNearbyMessage(Context context, Neighbor payload) {
         Gson gson = new Gson();
-        Wrapper message = new Wrapper(context, payload);
-        return new Message(gson.toJson(message).getBytes(Charset.forName("UTF-8")));
+
+        Wrapper wrapper = new Wrapper(context, payload);
+        byte[] bytes = gson.toJson(wrapper).getBytes(Charset.forName("UTF-8"));
+        Message message = new Message(bytes, TYPE);
+
+        return message;
     }
 
     public static Neighbor parseNearbyMessage(Message nearbyMessage) {
         Gson gson = new Gson();
         String string = new String(nearbyMessage.getContent()).trim();
-        Wrapper message = gson.fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), Wrapper.class);
-        if(message == null) {
+        Wrapper message = gson
+                .fromJson(new String(string.getBytes(Charset.forName("UTF-8"))), Wrapper.class);
+        if (message == null) {
             Log.w(TAG, "Unable to parse Nearby Message");
             return null;
         } else {

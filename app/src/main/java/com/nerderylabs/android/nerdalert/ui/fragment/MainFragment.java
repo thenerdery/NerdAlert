@@ -53,7 +53,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainFragment extends Fragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
@@ -108,18 +109,18 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
 
         Pair<String, Bitmap> profile = loadPrivilegedProfileData();
 
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             name = profile.first;
         }
         myInfo.setName(name);
 
-        if(tagline.isEmpty()) {
+        if (tagline.isEmpty()) {
             tagline = ProfileUtil.getDeviceName();
         }
         myInfo.setTagline(tagline);
 
         Bitmap photo = profile.second;
-        if(photo != null) {
+        if (photo != null) {
             myInfo.setBitmap(profile.second);
         }
 
@@ -128,9 +129,10 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
 
     private Pair<String, Bitmap> loadPrivilegedProfileData() {
         // check to see if we have the necessary permissions in the new M permission model
-        int permission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS);
+        int permission = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_CONTACTS);
         // if we don't, then request permission from the user. keep in mind we may never get it...
-        if(permission != PackageManager.PERMISSION_GRANTED) {
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             Log.w(TAG, "READ_CONTACTS permission not granted.");
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
                     Constants.REQUEST_ASK_PERMISSIONS);
@@ -148,7 +150,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         // restore state
         nameEditText.setText(myInfo.getName());
         taglineEditText.setText(myInfo.getTagline());
-        if(myInfo.getBitmap() != null) {
+        if (myInfo.getBitmap() != null) {
             photoImageView.setImageDrawable(new BitmapDrawable(getResources(), myInfo.getBitmap()));
         } else {
             Drawable photo = ContextCompat.getDrawable(getContext(), R.drawable.ic_contact_photo);
@@ -161,7 +163,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         View.OnFocusChangeListener focusListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
+                if (!hasFocus) {
                     persistNametagValues((TextView) v);
                 }
             }
@@ -171,7 +173,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         EditText.OnEditorActionListener doneListener = new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     persistNametagValues(v);
                 }
                 return false;
@@ -189,11 +191,11 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
     private void persistNametagValues(TextView view) {
         Context context = getContext();
         // stop publishing if the info has changed
-        if(Settings.isPublishing(context)) {
+        if (Settings.isPublishing(context)) {
             nearbyInterface.unpublish(myInfo);
             nearbyInterface.unsubscribe();
         }
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.my_name:
                 myInfo.setName(view.getEditableText().toString());
                 Settings.setName(context, view.getEditableText().toString());
@@ -224,7 +226,7 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
 
         // first time through.  we shouldn't be active unless something didn't shutdown correctly.
         Context context = getContext();
-        if(Settings.isPublishing(context) || Settings.isSubscribing(context)) {
+        if (Settings.isPublishing(context) || Settings.isSubscribing(context)) {
             startProgressIndicator();
         } else {
             stopProgressIndicator();
@@ -250,9 +252,9 @@ public class MainFragment extends Fragment implements SharedPreferences.OnShared
         Context context = getContext();
 
         // we might not have a context yet
-        if(context != null) {
+        if (context != null) {
             // update the UI to reflect our current Nearby state
-            if(Settings.isSubscribing(context) || Settings.isPublishing(context)) {
+            if (Settings.isSubscribing(context) || Settings.isPublishing(context)) {
                 startProgressIndicator();
             } else {
                 stopProgressIndicator();

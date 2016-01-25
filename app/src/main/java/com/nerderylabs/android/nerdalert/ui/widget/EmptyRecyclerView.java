@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 // https://github.com/googlesamples/android-XYZTouristAttractions/blob/master/Application/src/main/java/com/example/android/xyztouristattractions/ui/AttractionsRecyclerView.java
-public class EmptyRecyclerView extends RecyclerView{
+public class EmptyRecyclerView extends RecyclerView {
 
     private View emptyView;
 
@@ -47,8 +47,8 @@ public class EmptyRecyclerView extends RecyclerView{
     }
 
 
-     // Designate a view as the empty view. When the backing adapter has no
-     // data this view will be made visible and the recycler view hidden.
+    // Designate a view as the empty view. When the backing adapter has no
+    // data this view will be made visible and the recycler view hidden.
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }

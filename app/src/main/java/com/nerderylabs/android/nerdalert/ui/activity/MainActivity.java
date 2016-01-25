@@ -54,8 +54,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NearbyInterface, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity
+        implements NearbyInterface, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
         FragmentManager fm = getSupportFragmentManager();
         MainFragment mainFragment = (MainFragment) fm.findFragmentByTag(MAIN_FRAGMENT_TAG);
 
-        if(mainFragment == null) {
+        if (mainFragment == null) {
             mainFragment = new MainFragment();
             fm.beginTransaction().add(R.id.container, mainFragment, MAIN_FRAGMENT_TAG).commit();
         }
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     protected void onStart() {
         super.onStart();
 
-        if(!googleApiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
         }
     }
@@ -139,13 +140,13 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Google API Client connected");
 
-        if(Settings.isPublishing(this)) {
+        if (Settings.isPublishing(this)) {
             publish();
         } else {
             unpublish();
         }
 
-        if(Settings.isSubscribing(this)) {
+        if (Settings.isSubscribing(this)) {
             subscribe();
         } else {
             unsubscribe();
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     public void onConnectionSuspended(int i) {
         String text1 = getString(R.string.google_api_connection_suspended);
         String text2;
-        switch(i) {
+        switch (i) {
             case CAUSE_NETWORK_LOST:
                 text2 = getString(R.string.google_api_network_lost);
                 break;
@@ -184,14 +185,15 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == Constants.REQUEST_GOOGLE_PLAY_ERROR) {
+        if (requestCode == Constants.REQUEST_GOOGLE_PLAY_ERROR) {
             resolvingNearbyPermissionError = false;
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 publish();
                 subscribe();
-            } else if(resultCode == RESULT_CANCELED) {
+            } else if (resultCode == RESULT_CANCELED) {
                 Log.w(TAG, "User denied requested permissions.");
-                Toast.makeText(this, getString(R.string.permission_denied_nearby), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permission_denied_nearby),
+                        Toast.LENGTH_LONG).show();
             } else {
                 Log.e(TAG, "Failed to resolve error with code=" + resultCode);
             }
@@ -199,15 +201,18 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == Constants.REQUEST_ASK_PERMISSIONS) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (requestCode == Constants.REQUEST_ASK_PERMISSIONS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "Permission Granted!");
-                MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                MainFragment fragment = (MainFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.container);
                 fragment.restoreUserInformation();
             } else {
                 Log.w(TAG, "Permission Denied!");
-                Toast.makeText(this, getString(R.string.permission_denied_contacts), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permission_denied_contacts),
+                        Toast.LENGTH_LONG).show();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -215,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     }
 
     private void publish() {
-        if(publishedInfo != null) {
+        if (publishedInfo != null) {
             publish(publishedInfo);
         }
     }
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
     }
 
     private void unpublish() {
-        if(publishedInfo != null) {
+        if (publishedInfo != null) {
             unpublish(publishedInfo);
         }
     }
@@ -396,10 +401,12 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
             }
         } else {
             if (status.getStatusCode() == ConnectionResult.NETWORK_ERROR) {
-                Toast.makeText(this, getString(R.string.network_unavailable), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.network_unavailable), Toast.LENGTH_LONG)
+                        .show();
             } else {
                 // To keep things simple, pop a toast for all other error messages.
-                Toast.makeText(this.getApplicationContext(), "Unsuccessful: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getApplicationContext(),
+                        "Unsuccessful: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -412,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                 Log.d(TAG, "Message Found: " + message.getContent().length + " bytes");
 
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
-                if(neighbor != null) {
+                if (neighbor != null) {
                     TabFragment tabFragment;
                     if (message.getType().equals("beacon")) {
                         tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
@@ -434,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements NearbyInterface, 
                 Log.d(TAG, "Message Lost: " + message.getContent().length + " bytes");
 
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
-                if(neighbor != null) {
+                if (neighbor != null) {
                     TabFragment tabFragment;
                     if (message.getType().equals("beacon")) {
                         tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,

@@ -43,16 +43,16 @@ public class ProfileUtil {
 
         Cursor c = context.getContentResolver()
                 .query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
-        if(c != null && c.moveToFirst()) {
+        if (c != null && c.moveToFirst()) {
             String[] columnNames = c.getColumnNames();
             for (String columnName : columnNames) {
                 String columnValue = c.getString(c.getColumnIndex(columnName));
                 if (columnName.equals(ContactsContract.Profile.DISPLAY_NAME)) {
-                    if(columnValue != null) {
+                    if (columnValue != null) {
                         name = columnValue;
                     }
                 } else if (columnName.equals(ContactsContract.Profile.PHOTO_URI)) {
-                    if(columnValue != null) {
+                    if (columnValue != null) {
                         photo = columnValue;
                     }
                 }

@@ -61,14 +61,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
 
         Neighbor neighbor = neighbors.get(position);
-        if(neighbor.getName() != null) {
+        if (neighbor.getName() != null) {
             holder.name.setText(neighbor.getName());
         }
-        if(neighbor.getTagline() != null) {
+        if (neighbor.getTagline() != null) {
             holder.tagline.setText(neighbor.getTagline());
         }
-        if(neighbor.getBitmap() != null) {
-            holder.photo.setImageDrawable(new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
+        if (neighbor.getBitmap() != null) {
+            holder.photo.setImageDrawable(
+                    new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
         } else {
             Drawable photo = ContextCompat.getDrawable(context, tab.getEmptyPhotoDrawableId());
             DrawableCompat.setTint(photo, ContextCompat.getColor(context, R.color.color_primary));
