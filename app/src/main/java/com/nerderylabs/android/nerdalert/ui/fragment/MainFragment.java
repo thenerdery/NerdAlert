@@ -27,6 +27,7 @@ import com.nerderylabs.android.nerdalert.util.ProfileUtil;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -180,11 +182,25 @@ public class MainFragment extends Fragment
             }
         };
 
+        // open profile contact card when user's photo is tapped
+        ImageView.OnClickListener imageClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_EDIT);
+                intent.setDataAndType(ContactsContract.Profile.CONTENT_URI,
+                        ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                intent.putExtra("finishActivityOnSaveCompleted", true);
+                startActivity(intent);
+            }
+        };
+
         nameEditText.setOnEditorActionListener(doneListener);
         taglineEditText.setOnEditorActionListener(doneListener);
 
         nameEditText.setOnFocusChangeListener(focusListener);
         taglineEditText.setOnFocusChangeListener(focusListener);
+
+        photoImageView.setOnClickListener(imageClickListener);
 
     }
 

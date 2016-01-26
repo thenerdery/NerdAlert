@@ -48,12 +48,9 @@ public class NearbyApiUtil {
 
     public static Message newNearbyMessage(Context context, Neighbor payload) {
         Gson gson = new Gson();
-
         Wrapper wrapper = new Wrapper(context, payload);
         byte[] bytes = gson.toJson(wrapper).getBytes(Charset.forName("UTF-8"));
-        Message message = new Message(bytes, TYPE);
-
-        return message;
+        return new Message(bytes, TYPE);
     }
 
     public static Neighbor parseNearbyMessage(Message nearbyMessage) {
