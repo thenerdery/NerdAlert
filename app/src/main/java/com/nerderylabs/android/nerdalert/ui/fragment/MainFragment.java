@@ -95,13 +95,18 @@ public class MainFragment extends Fragment
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         restoreUserInformation();
 
         initializeNametag();
 
         initializeFab();
-
-        return view;
     }
 
     public void restoreUserInformation() {
@@ -157,7 +162,7 @@ public class MainFragment extends Fragment
         } else {
             Drawable photo = ContextCompat.getDrawable(getContext(), R.drawable.ic_contact_photo);
             DrawableCompat
-                    .setTint(photo, ContextCompat.getColor(getContext(), R.color.color_primary));
+                    .setTint(photo, ContextCompat.getColor(getContext(), R.color.color_nametag));
             photoImageView.setImageDrawable(photo);
         }
 

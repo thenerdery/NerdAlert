@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- https://www.materialpalette.com/blue/light-blue -->
-    <color name="color_primary_dark">#1976D2</color>
-    <color name="color_primary">#2196F3</color>
-    <color name="color_primary_light">#BBDEFB</color>
+    <color name="color_primary_dark">#007B89</color>
+    <color name="color_primary">#83C7CC</color>
     <color name="color_text_light">#FFFFFF</color>
-    <color name="color_accent">#03A9F4</color>
+    <color name="color_accent">#664659</color>
     <color name="color_text_primary">#212121</color>
     <color name="color_text_secondary">#727272</color>
-    <color name="color_divider">#B6B6B6</color>
     <color name="color_background">@color/color_text_light</color>
+    <color name="color_nametag">@color/color_primary_dark</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="semitransparent">#80FFFFFF</color>
+
+    <!-- https://www.materialpalette.com/blue/light-blue -->
+    <!--<color name="color_primary_dark">#1976D2</color>-->
+    <!--<color name="color_primary">#2196F3</color>-->
+    <!--<color name="color_primary_light">#BBDEFB</color>-->
+    <!--<color name="color_text_light">#FFFFFF</color>-->
+    <!--<color name="color_accent">#03A9F4</color>-->
+    <!--<color name="color_text_primary">#212121</color>-->
+    <!--<color name="color_text_secondary">#727272</color>-->
+    <!--<color name="color_divider">#B6B6B6</color>-->
+    <!--<color name="color_background">@color/color_text_light</color>-->
 
 </resources>

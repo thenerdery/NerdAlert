@@ -53,7 +53,7 @@
                         android:paddingTop="6dp"
                         android:textSize="36sp"
                         android:gravity="center"
-                        android:background="@color/color_accent"
+                        android:background="@color/color_nametag"
                         android:textColor="@color/color_text_light"
                         app:layout_widthPercent="100%" />
 
@@ -68,7 +68,7 @@
                         android:paddingBottom="6dp"
                         android:textSize="18sp"
                         android:gravity="center"
-                        android:background="@color/color_accent"
+                        android:background="@color/color_nametag"
                         android:textColor="@color/color_text_light"
                         app:layout_widthPercent="100%" />
 
@@ -126,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="14dp"
                         android:layout_marginTop="12dp"
-                        android:background="@color/color_accent"
+                        android:background="@color/color_nametag"
                         android:layout_below="@id/my_photo"
                         app:layout_widthPercent="100%" />
 

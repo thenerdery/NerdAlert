@@ -72,7 +72,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     new BitmapDrawable(context.getResources(), neighbor.getBitmap()));
         } else {
             Drawable photo = ContextCompat.getDrawable(context, tab.getEmptyPhotoDrawableId());
-            DrawableCompat.setTint(photo, ContextCompat.getColor(context, R.color.color_primary));
+            DrawableCompat.setTint(photo, ContextCompat.getColor(context, R.color.color_nametag));
             holder.photo.setImageDrawable(photo);
         }
 
