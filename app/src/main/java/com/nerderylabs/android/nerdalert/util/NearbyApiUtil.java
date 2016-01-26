@@ -32,7 +32,9 @@ public class NearbyApiUtil {
 
     private static final String TAG = NearbyApiUtil.class.getSimpleName();
 
-    private static final String TYPE = "nerd"; // not "beacon" - those are for beacons :)
+    public static final String TYPE_NERD = "nerd";
+
+    public static final String TYPE_BEACON = "beacon";
 
     private NearbyApiUtil() {
         // static class
@@ -50,7 +52,7 @@ public class NearbyApiUtil {
         Gson gson = new Gson();
         Wrapper wrapper = new Wrapper(context, payload);
         byte[] bytes = gson.toJson(wrapper).getBytes(Charset.forName("UTF-8"));
-        return new Message(bytes, TYPE);
+        return new Message(bytes, TYPE_NERD);
     }
 
     public static Neighbor parseNearbyMessage(Message nearbyMessage) {

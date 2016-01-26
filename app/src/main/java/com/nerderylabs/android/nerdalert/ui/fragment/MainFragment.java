@@ -189,7 +189,13 @@ public class MainFragment extends Fragment
                 Intent intent = new Intent(Intent.ACTION_EDIT);
                 intent.setDataAndType(ContactsContract.Profile.CONTENT_URI,
                         ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+
+                // In Android 4.0 (API version 14) and later, a problem in the contacts app causes
+                // incorrect navigation.To work around this problem in Android 4.0.3 (API version
+                // 15) and later, add the extended data key finishActivityOnSaveCompleted to the
+                // intent, with a value of true.
                 intent.putExtra("finishActivityOnSaveCompleted", true);
+
                 startActivity(intent);
             }
         };

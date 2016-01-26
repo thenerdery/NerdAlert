@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
                 if (neighbor != null) {
                     TabFragment tabFragment;
-                    if (message.getType().equals("beacon")) {
+                    if (message.getType().equals(NearbyApiUtil.TYPE_BEACON)) {
                         tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
                                 Tabs.BEACONS.getTabIndex());
                     } else {
@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity
                 Neighbor neighbor = NearbyApiUtil.parseNearbyMessage(message);
                 if (neighbor != null) {
                     TabFragment tabFragment;
-                    if (message.getType().equals("beacon")) {
+                    if (message.getType().equals(NearbyApiUtil.TYPE_BEACON)) {
                         tabFragment = (TabFragment) findViewPagerFragment(R.id.viewpager,
                                 Tabs.BEACONS.getTabIndex());
                     } else {
