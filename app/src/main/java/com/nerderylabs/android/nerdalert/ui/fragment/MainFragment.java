@@ -95,6 +95,10 @@ public class MainFragment extends Fragment
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        // every time we load this fragment, prompt the user for READ_CONTACTS permission if we
+        // don't already have it so we can load their profile data
+        requestReadContactsPermission();
+
         return view;
     }
 
@@ -134,19 +138,29 @@ public class MainFragment extends Fragment
 
     }
 
+    private void requestReadContactsPermission() {
+        int permission = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_CONTACTS);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "Requesting READ_CONTACTS permission from user");
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                    Constants.REQUEST_ASK_PERMISSIONS);
+        }
+    }
+
     private Pair<String, Bitmap> loadPrivilegedProfileData() {
+
         // check to see if we have the necessary permissions in the new M permission model
         int permission = ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_CONTACTS);
-        // if we don't, then request permission from the user. keep in mind we may never get it...
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.w(TAG, "READ_CONTACTS permission not granted.");
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
-                    Constants.REQUEST_ASK_PERMISSIONS);
+
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "READ_CONTACTS permission granted. Retrieving user profile...");
+            return ProfileUtil.getUserProfile(getContext());
+        } else {
+            Log.w(TAG, "READ_CONTACTS permission not granted. User profile unavailable.");
             return new Pair<>(null, null);
         }
-
-        return ProfileUtil.getUserProfile(getContext());
     }
 
     private void initializeNametag() {

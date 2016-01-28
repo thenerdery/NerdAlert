@@ -35,6 +35,22 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // this rewrites the release output file name using a custom format for easy identification
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def build = variant.buildType.name
+                    if (build == "release") {
+                        def name = "NerdAlert"
+                        def version = "v" + android.defaultConfig.versionName
+                        def code = "b" + android.defaultConfig.versionCode
+                        def date = new Date().format("yyyyMMdd-HHmmss")
+                        def fileName = name + "-" + build + "-" + version + "-" +
+                                code + "_" + date + ".apk"
+                        output.outputFile = new File(output.outputFile.parent, fileName)
+                    }
+                }
+            }
         }
     }
 }
