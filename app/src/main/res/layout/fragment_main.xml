@@ -141,7 +141,7 @@
                 android:background="@color/color_primary"
                 app:tabMode="fixed"
                 app:tabGravity="fill"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+                app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
         </android.support.design.widget.AppBarLayout>
 
