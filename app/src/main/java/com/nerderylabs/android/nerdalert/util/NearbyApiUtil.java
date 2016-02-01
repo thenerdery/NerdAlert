@@ -17,16 +17,10 @@
 package com.nerderylabs.android.nerdalert.util;
 
 import com.google.android.gms.iid.InstanceID;
-import com.google.android.gms.nearby.messages.Message;
-import com.google.android.gms.nearby.messages.Strategy;
-import com.google.gson.Gson;
 
 import com.nerderylabs.android.nerdalert.model.Neighbor;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.nio.charset.Charset;
 
 public class NearbyApiUtil {
 
@@ -40,6 +34,7 @@ public class NearbyApiUtil {
         // static class
     }
 
+    /* WORKSHOP 007a
     // The Strategy for our Nearby messages.  The defaults are to allow messages to be exchanged
     // over any distance for 5 minutes. Other options are listed here:
     // https://developers.google.com/android/reference/com/google/android/gms/nearby/messages/Strategy
@@ -47,14 +42,18 @@ public class NearbyApiUtil {
             .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
             .setDiscoveryMode(Strategy.DISCOVERY_MODE_DEFAULT)
             .build();
+    */
 
+    /* WORKSHOP 007b
     public static Message newNearbyMessage(Context context, Neighbor payload) {
         Gson gson = new Gson();
         Wrapper wrapper = new Wrapper(context, payload);
         byte[] bytes = gson.toJson(wrapper).getBytes(Charset.forName("UTF-8"));
         return new Message(bytes, TYPE_NERD);
     }
+    */
 
+    /* WORKSHOP 007c
     public static Neighbor parseNearbyMessage(Message nearbyMessage) {
         Gson gson = new Gson();
         String string = new String(nearbyMessage.getContent()).trim();
@@ -67,6 +66,7 @@ public class NearbyApiUtil {
             return message.payload;
         }
     }
+    */
 
     // NearbyApiUtil.Wrapper is a convenience class for wrapping a payload with a Google Play
     // Services instance identifier. This allows the Nearby API to distinguish identical payloads
