@@ -16,9 +16,6 @@
 
 package com.nerderylabs.android.nerdalert.ui.activity;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.nearby.messages.MessageListener;
-
 import com.nerderylabs.android.nerdalert.Constants;
 import com.nerderylabs.android.nerdalert.R;
 import com.nerderylabs.android.nerdalert.model.Neighbor;
@@ -38,30 +35,34 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-        /* WORKSHOP 003a:
+        /*** WORKSHOP 003a:
         implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener
-        */
+        ***/
 
-        /* WORKSHOP 004a:
+        /*** WORKSHOP 004a:
         , NearbyInterface
-         */
+        ***/
 {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String MAIN_FRAGMENT_TAG = TAG + "_main_fragment_tag";
 
+    /*** WORKSHOP 001b:
     private GoogleApiClient googleApiClient;
+    ***/
 
     // Tracks if we are currently resolving an error related to Nearby permissions. Used to avoid
     // duplicate Nearby permission dialogs if the user initiates both subscription and publication
     // actions without having opted into Nearby.
     private boolean resolvingNearbyPermissionError = false;
 
+    /*** WORKSHOP 001c:
     // The listener that receives new Nearby messages when subscribing
     private MessageListener messageListener;
+    ***/
 
     private Neighbor publishedInfo = null;
 
@@ -83,17 +84,17 @@ public class MainActivity extends AppCompatActivity
         // following error when publishing/subscribing:
         //    Attempting to perform a high-power operation from a non-Activity Context
 
-        /* WORKSHOP 001:
+        /*** WORKSHOP 002a:
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        */
+        ***/
 
-        /* WORKSHOP 004b
+        /*** WORKSHOP 004b:
         initializeMessageListener();
-        */
+        ***/
 
         FragmentManager fm = getSupportFragmentManager();
         MainFragment mainFragment = (MainFragment) fm.findFragmentByTag(MAIN_FRAGMENT_TAG);
@@ -109,20 +110,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        /* WORKSHOP 002a:
+        /*** WORKSHOP 002b:
         if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
         }
-        */
+        ***/
     }
 
     @Override
     protected void onStop() {
-        /* WORKSHOP 002b:
+        /*** WORKSHOP 002c:
         googleApiClient.disconnect();
-        */
+        ***/
 
-        /* WORKSHOP 006:
+        /*** WORKSHOP 006:
         unpublish();
         unsubscribe();
 
@@ -130,12 +131,12 @@ public class MainActivity extends AppCompatActivity
         // unpublish/unsubscribe state so the FAB isn't spinning when the app starts back up.
         Settings.setPublishing(this, false);
         Settings.setSubscribing(this, false);
-        */
+        ***/
 
         super.onStop();
     }
 
-    /* WORKSHOP 003b:
+    /*** WORKSHOP 003b:
     // If the user has requested a subscription or publication task that requires
     // GoogleApiClient to be connected, we keep track of that task and execute it here, since
     // we now have a connected GoogleApiClient.
@@ -156,9 +157,9 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-    */
+    ***/
 
-    /* WORKSHOP 003c:
+    /*** WORKSHOP 003c:
     @Override
     public void onConnectionSuspended(int i) {
         String text1 = getString(R.string.google_api_connection_suspended);
@@ -178,19 +179,18 @@ public class MainActivity extends AppCompatActivity
         Log.w(TAG, error);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
+    ***/
 
-    */
-
-    /* WORKSHOP 003d:
+    /*** WORKSHOP 003d:
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         String error = getString(R.string.google_api_connection_failed);
         Log.e(TAG, error);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
-    */
+    ***/
 
-    /* WORKSHOP 005b:
+    /*** WORKSHOP 005b:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-    */
+    ***/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /* WORKSHOP 004c:
+    /*** WORKSHOP 004c:
     @Override
     public void publish(Neighbor myInfo) {
         Log.d(TAG, "publish( " + myInfo + " )");
@@ -283,9 +283,9 @@ public class MainActivity extends AppCompatActivity
             publish(publishedInfo);
         }
     }
-    */
+    ***/
 
-    /* WORKSHOP 004d:
+    /*** WORKSHOP 004d:
     @Override
     public void unpublish(Neighbor myInfo) {
         Log.d(TAG, "unpublish( " + myInfo + " )");
@@ -320,9 +320,9 @@ public class MainActivity extends AppCompatActivity
             unpublish(publishedInfo);
         }
     }
-    */
+    ***/
 
-    /* WORKSHOP 004e:
+    /*** WORKSHOP 004e:
     @Override
     public void subscribe() {
         Log.d(TAG, "subscribe()");
@@ -363,9 +363,9 @@ public class MainActivity extends AppCompatActivity
                     });
         }
     }
-    */
+    ***/
 
-    /* WORKSHOP 004f:
+    /*** WORKSHOP 004f:
     @Override
     public void unsubscribe() {
         Log.d(TAG, "unsubscribe()");
@@ -401,9 +401,9 @@ public class MainActivity extends AppCompatActivity
                     });
         }
     }
-    */
+    ***/
 
-    /* WORKSHOP 005a:
+    /*** WORKSHOP 005a:
     // Handles errors generated when performing a subscription or publication action. Uses
     // Status#startResolutionForResult to display an opt-in dialog to handle the case
     // where a device is not opted into using Nearby.
@@ -430,9 +430,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-    */
+    ***/
 
-    /* WORKSHOP 004b
+    /*** WORKSHOP 004b
     private void initializeMessageListener() {
         messageListener = new MessageListener() {
             @Override
@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
     }
-    */
+    ***/
 
     // Fragments added to a ViewPager via the FragmentPagerManager are auto-tagged when
     // instantiated using the private static method FragmentPagerAdapter.makeFragmentName().

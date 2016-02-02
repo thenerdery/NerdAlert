@@ -230,13 +230,13 @@ public class MainFragment extends Fragment
 
     private void persistNametagValues(TextView view) {
         Context context = getContext();
-        /* WORKSHOP 008b:
+        /*** WORKSHOP 008b:
         // stop publishing if the info has changed
         if (Settings.isPublishing(context)) {
             nearbyInterface.unpublish(myInfo);
             nearbyInterface.unsubscribe();
         }
-        */
+        ***/
         switch (view.getId()) {
             case R.id.my_name:
                 myInfo.setName(view.getEditableText().toString());
@@ -255,7 +255,7 @@ public class MainFragment extends Fragment
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* WORKSHOP 008c:
+                /*** WORKSHOP 008c:
                 Context context = getContext();
                 if (Settings.isPublishing(context) || Settings.isSubscribing(context)) {
                     nearbyInterface.unpublish(myInfo);
@@ -264,7 +264,7 @@ public class MainFragment extends Fragment
                     nearbyInterface.publish(myInfo);
                     nearbyInterface.subscribe();
                 }
-                */
+                ***/
             }
         });
 
@@ -280,9 +280,9 @@ public class MainFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /* WORKSHOP 008a
+        /*** WORKSHOP 008a
         nearbyInterface = (NearbyInterface) getActivity();
-        */
+        ***/
     }
 
     @Override

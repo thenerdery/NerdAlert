@@ -57,7 +57,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    /*** WORKSHOP 001:
     compile 'com.google.android.gms:play-services:8.4.0'
+    ***/
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
